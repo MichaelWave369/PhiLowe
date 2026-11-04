@@ -46,7 +46,10 @@ export default function ComedyClub({beep,writerJokes=[]}){
   const [duelAnswer,setDuelAnswer]=useState(null);
   const [duelWins,setDuelWins]=useState(0);
   const [openMicPlayed,setOpenMicPlayed]=useState(false);
-  const [badges,setBadges]=useState(()=>readBadges(window.localStorage));
+  const [badges,setBadges]=useState(()=>{
+    try{return readBadges(window.localStorage);}
+    catch{return [];}
+  });
   const [eventLog,setEventLog]=useState([]);
   function logEvent(line){setEventLog(old=>[line,...old].slice(0,5));}
   const duel=duelForAct(act);

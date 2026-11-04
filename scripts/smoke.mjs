@@ -50,6 +50,23 @@ async function run() {
     await page.locator('.club-controls').getByRole('button', { name: /REVEAL PUNCHLINE/ }).click();
     const comedian = page.locator('.club-speaker span').first();
     if (!(await comedian.innerText()).includes('BIX BINARY')) throw new Error('Comedy Club did not start with Bix.');
+    // Browser interaction tests protect against the blank-screen regressions:
+    // React must actually mount and the brand-new game controls must work.
+    await page.getByRole('button', { name: 'Trigger rubber chicken' }).click();
+    await page.locator('.club-prop-cue').getByText(/rubber chicken/i).waitFor({ timeout: 5000 });
+    await page.getByRole('button', { name: 'OPEN HECKLER DUEL' }).click();
+    await page.locator('.club-duel-question').waitFor({ timeout: 5000 });
+    if (await page.locator('.club-duel-choices button').count() !== 3)
+      throw new Error('Heckler challenge did not show three choices.');
+    await page.locator('.club-duel-choices button').first().click();
+    await page.locator('.club-duel-result').waitFor({ timeout: 5000 });
+    await page.locator('.club-badge.unlocked').first().waitFor({ timeout: 5000 });
+    await page.locator('.club-controls').getByRole('button', { name: /NEXT COMEDIAN/ }).click();
+    await page.getByRole('button', { name: 'Trigger banana peel' }).click();
+    await page.locator('.club-chaos-effect.chaos-banana').waitFor({ timeout: 5000 });
+    if (await page.locator('.club-badge.unlocked').count() < 2)
+      throw new Error('Club achievements were not awarded.');
+
     const setup = 'Why did the floppy disk visit the comedy club?';
     const punchline = 'To prove its timing was still magnetic.';
     await page.locator('#writer-editor textarea').nth(0).fill(setup);
@@ -58,8 +75,11 @@ async function run() {
     await page.getByText(setup).first().waitFor({ timeout: 10000 });
     await page.reload({ waitUntil: 'domcontentloaded' });
     await page.getByText(setup).first().waitFor({ timeout: 10000 });
+    if (await page.locator('.club-badge.unlocked').count() < 2)
+      throw new Error('Club achievements did not persist across page refresh.');
+
     if (errors.length) throw new Error('Browser JavaScript errors:\n' + errors.join('\n'));
-    console.log('PASS: React mounted, terminal rendered, comedy show ran, writer saved and persisted, no page errors. Base: ' + base);
+    console.log('PASS: React mounted, terminal rendered, Comedy Club props/duel/badges worked and persisted, writer saved and persisted, no page errors. Base: ' + base);
   } finally {
     if (browser) await browser.close();
     server.kill('SIGTERM');
