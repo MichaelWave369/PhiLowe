@@ -16,7 +16,15 @@ jobs:
           node-version: '22'
       - name: Install dependencies
         run: npm install --no-audit --no-fund
+      - name: Reject undefined variables and missing hooks
+        run: npm run lint
       - name: Verify jokes and shuffle-bag behavior
         run: npm test
       - name: Build React site
         run: npm run build
+      - name: Smoke-test actual browser rendering (root path)
+        run: npm run smoke
+      - name: Build with GitHub Pages base path
+        run: npm run build -- --base=/PhiLowe/
+      - name: Smoke-test GitHub Pages subpath
+        run: npm run smoke:pages
