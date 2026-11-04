@@ -272,3 +272,69 @@
 /* Keep seven navigation items accessible on small screens. */
 .site-head nav{flex-wrap:wrap;row-gap:8px;justify-content:center}
 @media(max-width:760px){.site-head nav{gap:9px;justify-content:space-between}.site-head nav a{font-size:9px}}
+
+
+/* Rung 5: Audience Chaos, deterministic interactive slapstick and heckler duels. */
+.club-chaos-effect{position:absolute;z-index:8;top:133px;left:63%;width:100px;height:105px;display:grid;place-items:center;pointer-events:none;filter:drop-shadow(5px 7px 0 #211629);transform-origin:center bottom}
+.club-chaos-effect>span{font-size:72px;line-height:1;display:block;filter:drop-shadow(0 0 12px #ffdc9670)}
+.chaos-chicken{animation:club-squeak .85s ease-in-out 2}
+.chaos-banana{left:24%;top:237px;animation:club-slip 1.45s ease-in-out 1 both}
+.chaos-confetti{left:43%;top:89px;animation:club-party 1.2s ease-out 1}
+.chaos-trapdoor{left:37%;top:279px;width:175px;height:48px;border-radius:50%;background:#130c1d;border:7px solid #af715f;transform:rotateX(52deg);animation:club-door .7s ease-out 1 both}
+.chaos-trapdoor>span{font:52px 'DM Mono',monospace;color:#171020}
+.club-confetti-pieces{position:absolute;top:0;left:-110px;min-width:340px;letter-spacing:17px;font:25px/1.5 'Syne',sans-serif;color:#f7cf8e;text-shadow:4px 20px #ec829f,15px 48px #7ce3d1;animation:club-confetti 1.3s ease-out 1 both}
+@keyframes club-squeak{0%,100%{transform:rotate(0) scale(1)}25%{transform:rotate(-20deg) scale(1.15)}75%{transform:rotate(19deg) scale(.92)}}
+@keyframes club-slip{0%{transform:translateX(150px) rotate(0)}45%{transform:translateX(-25px) rotate(-30deg)}80%{transform:translateX(0) rotate(25deg)}100%{transform:translateX(0) rotate(0)}}
+@keyframes club-party{0%{transform:scale(.3) rotate(-15deg);opacity:0}30%{transform:scale(1.6) rotate(13deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes club-confetti{from{transform:translateY(-26px);opacity:0}to{transform:translateY(78px);opacity:.85}}
+@keyframes club-door{0%{transform:rotateX(0deg) scaleX(.5);opacity:.4}100%{transform:rotateX(52deg) scaleX(1);opacity:1}}
+.club-prop-cue{margin-top:12px;background:#3e3147;color:#f6d7bd;padding:13px 15px;border-left:4px solid #f2c278;font:12px/1.6 'Space Grotesk',sans-serif}
+.club-prop-cue strong{font:700 10px 'DM Mono',monospace;color:#f1c983}
+.club-prop-rack{border-top:1px dashed #795d81;padding:16px 17px;background:#20182f}
+.club-extra-heading{display:flex;gap:14px;align-items:center;justify-content:space-between;margin-bottom:12px}
+.club-extra-heading span{font:700 11px 'DM Mono',monospace;color:#f3cd8d}
+.club-extra-heading small{font:9px/1.5 'DM Mono',monospace;color:#c1a8c8;text-align:right}
+.club-prop-buttons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.club-prop-buttons button{background:#3b2a4b;border:1px solid #745b78;padding:12px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;min-height:90px;color:#f7debf;cursor:pointer}
+.club-prop-buttons button span{font-size:31px;line-height:1}
+.club-prop-buttons button strong{font:700 9px/1.5 'DM Mono',monospace;text-align:center}
+.club-prop-buttons button:hover:not(:disabled){background:#684365;border-color:#e9b681}
+.club-prop-buttons button:disabled{opacity:.44;cursor:not-allowed}
+.club-duel-box{border-top:1px solid #604d71;background:#251c36;padding:16px 17px}
+.club-duel-heading{display:flex;justify-content:space-between;gap:15px;align-items:center}
+.club-duel-heading>div{display:flex;flex-direction:column;gap:5px}
+.club-duel-heading span{font:700 11px 'DM Mono',monospace;color:#f3cd8d}
+.club-duel-heading small{font:10px/1.55 'Space Grotesk',sans-serif;color:#bcaac0}
+.club-duel-heading button{flex:none;background:#f0c67c;color:#352640;padding:12px 15px;border:0;cursor:pointer;font:800 10px 'DM Mono',monospace}
+.club-duel-heading button:disabled{opacity:.42;cursor:not-allowed}
+.club-duel-heading button:hover:not(:disabled){filter:brightness(1.08)}
+.club-duel-play{border:1px solid #825a76;padding:18px;margin-top:15px;background:#1a1328}
+.club-duel-question{font:700 16px/1.6 'Syne',sans-serif;color:#ffe2b5;margin:0 0 17px}
+.club-duel-choices{display:grid;gap:8px}
+.club-duel-choices button{display:flex;gap:12px;align-items:center;border:1px solid #735875;background:#352640;color:#f9e3cb;padding:13px 12px;text-align:left;font:13px/1.45 'Space Grotesk',sans-serif;cursor:pointer}
+.club-duel-choices button span{font:700 12px 'DM Mono',monospace;color:#e0be8d}
+.club-duel-choices button:not(:disabled):hover{background:#684567;border-color:#e0b38d}
+.club-duel-choices button:disabled{opacity:.72;cursor:not-allowed}
+.club-duel-choices button.right{border-color:#92d6ae;background:#284d48;opacity:1}
+.club-duel-choices button.wrong{border-color:#df95a8;background:#61394d;opacity:1}
+.club-duel-result{background:#3e2c49;padding:15px;border-left:4px solid #c38ba0;color:#f6dac2;font:12px/1.65 'DM Mono',monospace;margin:13px 0 0}
+.club-duel-result.win{border-left-color:#a1dfb5}
+.club-duel-result.loss{border-left-color:#e6a9a2}
+.club-badges{border-top:1px solid #705572;padding:19px 14px}
+.club-badges .club-stats-heading{display:flex;justify-content:space-between;align-items:center}
+.club-badges .club-stats-heading span{color:#bda8c9}
+.club-badges>p{color:#bba7bf;font:11px/1.5 'Space Grotesk',sans-serif}
+.club-badge-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:14px}
+.club-badge{border:1px solid #614d67;background:#2c2238;padding:12px 8px;display:flex;min-height:124px;align-items:center;flex-direction:column;justify-content:center;gap:6px;text-align:center}
+.club-badge>span{font-size:23px;line-height:1}
+.club-badge strong{font:800 10px/1.25 'Syne',sans-serif;color:#e8cfb1}
+.club-badge small{font:9px/1.4 'Space Grotesk',sans-serif;color:#ad9fb4}
+.club-badge.locked{filter:saturate(.2);opacity:.4}
+.club-badge.unlocked{border-color:#e9c77f;background:#50405a;box-shadow:inset 0 0 0 1px #9d8093}
+.club-badge.unlocked strong{color:#fbd997}
+.club-incident-log{border:1px solid #66506c;background:#1b1229;margin-top:16px;padding:21px}
+.club-incident-log>strong{font:800 13px 'DM Mono',monospace;color:#f0cf99}
+.club-incident-log ol{padding:0 0 0 22px;display:grid;gap:9px;margin:14px 0 0;color:#bba9c5;font:12px/1.6 'DM Mono',monospace}
+.club-incident-log p{color:#aa98b9;font:12px/1.5 'DM Mono',monospace}
+@media(max-width:760px){.club-prop-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}.club-duel-heading{flex-direction:column;align-items:stretch}.club-extra-heading{flex-direction:column;align-items:flex-start}.club-extra-heading small{text-align:left}.club-chaos-effect{left:63%;top:111px}.chaos-banana{top:205px;left:20%}.chaos-trapdoor{top:234px;left:25%}}
+@media(prefers-reduced-motion:reduce){.club-chaos-effect,.club-confetti-pieces{animation:none!important}}

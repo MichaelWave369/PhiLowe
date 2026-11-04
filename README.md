@@ -60,3 +60,12 @@ The **PhiLowe Comedy Club** is a standalone, offline-first, single-player, simul
 Use **Start the Show**, **Reveal Punchline**, **Next Comedian**, **Applaud**, **Groan**, and **Heckle**. Each performer has personality-specific intros and original heckle responses. Optional **Auto Show** cycles every 4.8 seconds for setups and 6.4 seconds for punchlines; it is off by default and cleans up its timers. Keyboard shortcuts when the stage has focus: N (next), R (reveal), H (heckle). The local audience scoreboard and six-act show log are not posted to a server. Comedians are fictional creations of Phi369 Labs, not characters belonging to Al Lowe or Sierra.
 
 `npm test` validates cast rotation, department restrictions, shuffle-bag nonrepetition, local open-mic behavior, and audience labeling. This is **not** a networked room, live show, or VR headset implementation yet.
+
+
+## Audience Chaos (v5)
+
+The pixel Comedy Club now has interactive slapstick and a heckler minigame. **Four single-use-per-act stage props** (rubber chicken, banana peel, confetti cannon, trapdoor) produce animated, screen-reader-announced stage events. **Heckler Duels** present a three-option original comeback challenge for each comedian, including your local Open Mic performer. Each act offers one chance for a 100-point win; wrong answers stay in the backstage incident log and the next act offers a fresh attempt.
+
+Seven **Achievements** unlock through play: Curtain Call, Props to You, Master of Disaster, Comeback Kid, Crowd Pleaser, Ten Act Wonder, and The Writer Is In. The trophy cabinet persists only in browser `localStorage`; no accounts or backend. Session scores reset on reload. Keyboard shortcuts when the club itself is focused: `N` next act, `R` reveal, `H` heckle, `P` rubber chicken, `D` open duel. No props can fire until an act begins. The extra animations respect reduced-motion preferences.
+
+The CI browser smoke tests for both `/` and `/PhiLowe/` now exercise prop controls, duel choices, badge persistence, show progression, and the Writer Room. All content and comedy characters are original and remain independent of Al Lowe's games and copyrighted assets.

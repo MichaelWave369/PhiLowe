@@ -2,6 +2,7 @@ import React,{useEffect,useMemo,useRef,useState} from 'react';
 import {JOKES} from './jokes.js';
 import {onStage} from './writerRoomStore.js';
 import {COMEDIANS,GUEST_COMEDIAN,lineupFor,nextClubAct,comebackFor,crowdLabel} from './comedyClubEngine.js';
+import {STAGE_PROPS,BADGES,getProp,duelForAct,answerDuel,earnedBadges,readBadges,writeBadges} from './audienceChaos.js';
 
 const HECKLES=[
   'I HAVE HAD LONGER LAUGHS FROM A LOADING SCREEN!',
@@ -38,6 +39,34 @@ export default function ComedyClub({beep,writerJokes=[]}){
   const [heckleLine,setHeckleLine]=useState('');
   const [comeback,setComeback]=useState('');
   const [history,setHistory]=useState([]);
+  const [stageProp,setStageProp]=useState(null);
+  const [propUses,setPropUses]=useState(0);
+  const [usedProps,setUsedProps]=useState([]);
+  const [duelOpen,setDuelOpen]=useState(false);
+  const [duelAnswer,setDuelAnswer]=useState(null);
+  const [duelWins,setDuelWins]=useState(0);
+  const [openMicPlayed,setOpenMicPlayed]=useState(false);
+  const [badges,setBadges]=useState(()=>{
+    try{return readBadges(window.localStorage);}
+    catch{return [];}
+  });
+  const [eventLog,setEventLog]=useState([]);
+  function logEvent(line){setEventLog(old=>[line,...old].slice(0,5));}
+  const duel=duelForAct(act);
+  const propVisual=stageProp?getProp(stageProp.id):null;
+  useEffect(()=>{
+    const gained=earnedBadges({
+      acts:act?.number||0,props:usedProps,duelWins,laughs,openMicPlayed
+    });
+    setBadges(old=>{
+      const next=gained.filter(id=>!old.includes(id));
+      return next.length?[...old,...next]:old;
+    });
+  },[act?.number,usedProps,duelWins,laughs,openMicPlayed]);
+  useEffect(()=>{
+    try{writeBadges(window.localStorage,badges);}
+    catch{/* badges are optional if storage is blocked */}
+  },[badges]);
 
   function cueNext(){
     const next=nextClubAct(JOKES,staged,bags.current,turn.current);
@@ -48,11 +77,35 @@ export default function ComedyClub({beep,writerJokes=[]}){
     setVote(null);
     setHeckleLine('');
     setComeback('');
+    setStageProp(null);
+    setDuelOpen(false);
+    setDuelAnswer(null);
+    if(next.comedian.id==='guest')setOpenMicPlayed(true);
     setHistory(old=>[{
       number:next.number,who:next.comedian.name,
       setup:next.joke.setup
     },...old].slice(0,6));
+    logEvent('ACT '+next.number+': '+next.comedian.name+' TAKES THE MIC.');
     beep?.(650,.07);
+  }
+  function dropProp(id){
+    if(!act||stageProp)return;
+    const prop=getProp(id);
+    if(!prop)return;
+    setStageProp({id:prop.id,sequence:propUses+1});
+    setPropUses(n=>n+1);
+    setUsedProps(old=>old.includes(prop.id)?old:[...old,prop.id]);
+    logEvent(prop.label+': '+prop.cue);
+    beep?.(prop.id==='trapdoor'?230:690,.12);
+  }
+  function answerHeckler(choice){
+    if(!duel||duelAnswer)return;
+    const result=answerDuel(duel,choice);
+    if(!result)return;
+    setDuelAnswer({...result,choice});
+    if(result.correct)setDuelWins(n=>n+1);
+    logEvent(result.correct?'HECKLER DEFEATED. +100 POINTS.':'HECKLER SURVIVED. TRY AGAIN NEXT ACT.');
+    beep?.(result.correct?970:230,.11);
   }
   function reveal(){
     if(!act||phase!=='setup')return;
@@ -103,6 +156,8 @@ export default function ComedyClub({beep,writerJokes=[]}){
     if(key==='n'){e.preventDefault();cueNext();}
     if(key==='r'&&phase==='setup'){e.preventDefault();reveal();}
     if(key==='h'&&act){e.preventDefault();heckle();}
+    if(key==='p'&&act){e.preventDefault();dropProp('chicken');}
+    if(key==='d'&&act){e.preventDefault();setDuelOpen(true);}
   }
   const applause=keep(50+(laughs-groans)*9,0,100);
   const active=act?.comedian;
@@ -128,6 +183,10 @@ export default function ComedyClub({beep,writerJokes=[]}){
               <span>INSERT LAUGHTER TO BEGIN</span>
               <span className="club-idle-glyph" aria-hidden="true">♫</span>
             </div>}
+            {propVisual&&<div key={stageProp.sequence} className={'club-chaos-effect '+propVisual.className} aria-hidden="true">
+              <span>{propVisual.symbol}</span>
+              {propVisual.id==='confetti'&&<div className="club-confetti-pieces">✦ ✧ ✦ ✧ ✦ ✧ ✦</div>}
+            </div>}
             <div className="club-stagefloor" aria-hidden="true"/>
             <div className="club-micstand" aria-hidden="true"><span/></div>
             <div className={'club-crowd '+(phase==='punchline'?'club-crowd-active':'')} aria-hidden="true">
@@ -143,6 +202,7 @@ export default function ComedyClub({beep,writerJokes=[]}){
               {phase==='punchline'?<p className="club-punchline">{act.joke.punchline}</p>:<p className="club-unrevealed">[ HOLD FOR THE PUNCHLINE ... ]</p>}
             </div>:<div className="club-speech"><h3>Welcome to PhiLowe after dark.</h3><p>Start the show to meet the cast. Press Reveal when the setup has had enough time to embarrass itself.</p></div>}
             {heckleLine&&<div className="club-heckle-dialog"><span>AUDIENCE: {heckleLine}</span><strong>{active?.name}: {comeback}</strong></div>}
+            {propVisual&&<div className="club-prop-cue" role="status"><strong>BACKSTAGE INCIDENT:</strong> {propVisual.cue}</div>}
           </div>
           <div className="club-console">
             <div className="club-controls">
@@ -155,7 +215,33 @@ export default function ComedyClub({beep,writerJokes=[]}){
               <button type="button" onClick={()=>react('groan')} disabled={phase!=='punchline'||!!vote} className={vote==='groan'?'selected':''}>☹ GROAN</button>
               <button type="button" onClick={heckle} disabled={!act}>📣 HECKLE</button>
             </div>
-            <p className="club-keyhint">FOCUS STAGE THEN: <kbd>N</kbd> NEXT ACT · <kbd>R</kbd> REVEAL · <kbd>H</kbd> HECKLE. AUTO SHOW IS OFF BY DEFAULT.</p>
+            <div className="club-prop-rack" role="group" aria-label="Stage prop effects">
+              <div className="club-extra-heading"><span>PROP CLOSET / PHYSICAL COMEDY</span><small>{stageProp?'ONE PROP PER ACT. THE INSURANCE COMPANY INSISTS.':'CHOOSE ONE PROP FOR THIS ACT'}</small></div>
+              <div className="club-prop-buttons">
+                {STAGE_PROPS.map(prop=><button key={prop.id} type="button"
+                  aria-label={'Trigger '+prop.label.toLowerCase()}
+                  disabled={!act||!!stageProp} onClick={()=>dropProp(prop.id)}>
+                  <span aria-hidden="true">{prop.symbol}</span><strong>{prop.label}</strong>
+                </button>)}
+              </div>
+            </div>
+            <div className="club-duel-box">
+              <div className="club-duel-heading">
+                <div><span>HECKLER'S CHALLENGE</span><small>Choose the best comeback. One attempt per act, 100 points for a win.</small></div>
+                <button type="button" disabled={!act} aria-expanded={duelOpen}
+                  onClick={()=>setDuelOpen(v=>!v)}>{duelOpen?'CLOSE DUEL':'OPEN HECKLER DUEL'}</button>
+              </div>
+              {duelOpen&&duel&&<div className="club-duel-play">
+                <p className="club-duel-question">{duel.prompt}</p>
+                <div className="club-duel-choices">{duel.choices.map((answer,i)=><button type="button" key={i} disabled={!!duelAnswer}
+                  className={duelAnswer?.choice===i?(duelAnswer.correct?'right':'wrong'):''}
+                  onClick={()=>answerHeckler(i)}><span>{String(i+1).padStart(2,'0')}</span>{answer}</button>)}</div>
+                {duelAnswer&&<p className={'club-duel-result '+(duelAnswer.correct?'win':'loss')} role="status">
+                  {duelAnswer.text} {duelAnswer.correct?'(+100 POINTS)':'(NO POINTS)'}
+                </p>}
+              </div>}
+            </div>
+            <p className="club-keyhint">FOCUS STAGE THEN: <kbd>N</kbd> NEXT ACT · <kbd>R</kbd> REVEAL · <kbd>H</kbd> HECKLE · <kbd>P</kbd> CHICKEN · <kbd>D</kbd> DUEL. AUTO SHOW IS OFF BY DEFAULT.</p>
           </div>
         </div>
         <aside className="club-side">
@@ -172,7 +258,15 @@ export default function ComedyClub({beep,writerJokes=[]}){
             <div className="club-statrow"><span>APPLAUSE</span><strong>{laughs}</strong><span>GROANS</span><strong>{groans}</strong></div>
             <div className="club-meter" role="progressbar" aria-label="Audience approval" aria-valuemin={0} aria-valuemax={100} aria-valuenow={applause}><div style={{width:applause+'%'}}/></div>
             <p>{crowdLabel(laughs,groans)}</p>
-            <small>HECKLES THROWN: {heckles} · Votes and scores reset on reload.</small>
+            <small>HECKLES THROWN: {heckles} · PROPS FIRED: {propUses} · DUELS WON: {duelWins} · Session scores reset on reload.</small>
+          </div>
+          <div className="club-badges">
+            <div className="club-stats-heading">TROPHY CABINET <span>{badges.length}/{BADGES.length}</span></div>
+            <p>Earn these in the show. Unlocked trophies stay on this browser.</p>
+            <div className="club-badge-grid">{BADGES.map(b=><div key={b.id} className={'club-badge '+(badges.includes(b.id)?'unlocked':'locked')}
+              title={b.description} aria-label={b.name+': '+(badges.includes(b.id)?'unlocked':'locked')+'. '+b.description}>
+              <span aria-hidden="true">{b.symbol}</span><strong>{b.name}</strong><small>{b.description}</small>
+            </div>)}</div>
           </div>
           <div className="club-billboard">
             <span>OPEN MIC NIGHT</span>
@@ -187,6 +281,10 @@ export default function ComedyClub({beep,writerJokes=[]}){
         <div className="club-history">
           {history.length?history.map(item=><div key={item.number}><span>ACT {String(item.number).padStart(3,'0')}</span><strong>{item.who}</strong><p>{item.setup}</p></div>):<p className="club-history-empty">The club is quiet. Suspiciously quiet. There must be a punchline somewhere.</p>}
         </div>
+      </div>
+      <div className="club-incident-log" aria-live="polite">
+        <strong>BACKSTAGE INCIDENT REPORT</strong>
+        {eventLog.length?<ol>{eventLog.map((line,index)=><li key={index}>{line}</li>)}</ol>:<p>No accidents have been reported. The management is concerned.</p>}
       </div>
       <p className="club-disclaimer">This is an original, single-player simulated comedy show, not a livestream or multiplayer room. The cast, heckles and applause are fictional; your real reactions and Writer Room material remain on this device. Independent fan tribute, not affiliated with or endorsed by Al Lowe.</p>
     </div>
