@@ -95,7 +95,7 @@ export function exportBackup(list,now=new Date().toISOString()){
   return JSON.stringify({format:BACKUP_FORMAT,version:SCHEMA_VERSION,exportedAt:now,jokes:validatedArray(list)},null,2);
 }
 export function parseBackup(text){
-  if(typeof text!=='string'||text.length>MAX_IMPORT_BYTES)throw new Error('Backup exceeds the 512 KB limit.');
+  if(typeof text!=='string'||text.length>MAX_IMPORT_BYTES)throw new Error('Backup exceeds the 2 MB limit.');
   let data;
   try {data=JSON.parse(text);}catch{throw new Error('This is not valid JSON.');}
   if(data?.format!==BACKUP_FORMAT||data?.version!==SCHEMA_VERSION)throw new Error('This is not a PhiLowe Writer Room v1 backup.');

@@ -78,7 +78,7 @@ export default function WriterRoom({jokes,onChange,beep,storageWarning}){
     if(!file)return;
     setImporting(true);setError('');
     try{
-      if(file.size>MAX_IMPORT_BYTES)throw new Error('File exceeds the 512 KB backup limit.');
+      if(file.size>MAX_IMPORT_BYTES)throw new Error('File exceeds the 2 MB backup limit.');
       const text=await file.text();
       const records=parseBackup(text);
       const result=mergeBackup(jokes,records);
