@@ -44,3 +44,10 @@ This is an **unofficial fan tribute** and not an Al Lowe, Sierra, or Leisure Sui
 The Laugh Lounge now contains **112 original jokes** split into eight categories. It includes a setup/reveal/punchline stage, a no-repeat shuffle-bag player, live joke search, a mini archive, audience heckles, personal laugh/groan reactions, favorites saved in browser local storage, and clipboard sharing. No external service or tracking is needed.
 
 In the retro terminal, run `JOKE`, `JOKE VR`, `JOKE RETRO`, `JOKE LOVE`, `JOKES`, or `HECKLE`. `JOKES` lists all departments. `npm test` checks archive integrity and no-repeat behavior. All jokes are independently written for this project, not Al Lowe quotations or game text.
+
+
+## Writer Room (v3)
+
+The independent fan tribute now has an offline-first **Writer Room** at `#writers-room`. Write, edit, and privately annotate your own jokes; choose either **Draft** (writer-only) or **On Stage** (appears in the Laugh Lounge and `JOKE MINE` in the terminal on this device). Browse and filter your vault, and export/import validated, versioned JSON backups. Imports merge without replacing existing jokes and skip duplicate setups/punchlines. Maximum 500 local jokes. No login, backend, or submissions to an external service. Because browser storage can be cleared, export backups regularly.
+
+`npm test` now includes tests for schema validation, create/update/delete, stage visibility, backup round trips, duplicate safety, and import limits.

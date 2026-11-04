@@ -4,7 +4,7 @@ export const STORAGE_KEY='philowe.writer-room.v1';
 export const BACKUP_FORMAT='philowe.writer-room';
 export const SCHEMA_VERSION=1;
 export const MAX_JOKES=500;
-export const MAX_IMPORT_BYTES=512*1024;
+export const MAX_IMPORT_BYTES=2*1024*1024;
 const validCategories=new Set(JOKE_CATEGORIES.map(c=>c.id));
 
 function field(value,name,max,required=true){

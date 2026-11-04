@@ -50,7 +50,7 @@ test('malformed browser storage warns rather than throwing or returning junk',()
 test('malformed or incompatible backups are rejected',()=>{
   assert.throws(()=>parseBackup('oops'),/valid JSON/);
   assert.throws(()=>parseBackup('{}'),/not a PhiLowe/);
-  assert.throws(()=>parseBackup('x'.repeat(512*1024+1)),/512 KB/);
+  assert.throws(()=>parseBackup('x'.repeat(2*1024*1024+1)),/2 MB/);
 });
 test('merge skips duplicate joke text, remints IDs and keeps unpublished as drafts',()=>{
   const one=upsertJoke([],draft(),null,uid,stamp);
