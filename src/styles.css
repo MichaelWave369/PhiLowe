@@ -268,3 +268,7 @@
 @media(max-width:760px){.club-section{padding:72px 0}.club-scene{height:335px}.club-neon{font-size:17px;padding:10px}.club-performer{transform:scale(.85);transform-origin:bottom}.club-spotlight-copy{padding:19px}.club-controls{grid-template-columns:1fr}.club-controls button{border-bottom:1px solid #6c506c;padding:15px}.club-aftershow{grid-template-columns:1fr}.club-history{grid-template-columns:1fr}.club-roster{grid-template-columns:1fr}.club-speech h3{font-size:23px}.club-housebar{font-size:9px}}
 @media(max-width:390px){.club-scene{height:300px}.club-neon{font-size:13px}.club-performer{left:calc(50% - 75px)}.club-micstand{left:calc(50% + 35px)}}
 @media(prefers-reduced-motion:reduce){.club-dancing,.club-crowd-active>span{animation:none!important}.club-meter div{transition:none}}
+
+/* Keep seven navigation items accessible on small screens. */
+.site-head nav{flex-wrap:wrap;row-gap:8px;justify-content:center}
+@media(max-width:760px){.site-head nav{gap:9px;justify-content:space-between}.site-head nav a{font-size:9px}}
