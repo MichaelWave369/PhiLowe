@@ -47,7 +47,7 @@ async function run() {
     if (!heading.includes('THE LAUGH')) throw new Error('Main hero did not render: ' + heading);
     await page.getByText(/PHILOWE BIOS v1\.0/).waitFor({ timeout: 10000 });
     await page.getByRole('button', { name: /START THE SHOW/ }).click();
-    await page.getByRole('button', { name: /REVEAL PUNCHLINE/ }).click();
+    await page.locator('.club-controls').getByRole('button', { name: /REVEAL PUNCHLINE/ }).click();
     const comedian = page.locator('.club-speaker span').first();
     if (!(await comedian.innerText()).includes('BIX BINARY')) throw new Error('Comedy Club did not start with Bix.');
     const setup = 'Why did the floppy disk visit the comedy club?';
