@@ -64,6 +64,22 @@ async function run() {
     await page.locator('.club-controls').getByRole('button', { name: /NEXT COMEDIAN/ }).click();
     await page.getByRole('button', { name: 'Trigger banana peel' }).click();
     await page.locator('.club-chaos-effect.chaos-banana').waitFor({ timeout: 5000 });
+    // Rung 7: real browser interaction, lane-choice results, and Mabel's ledger.
+    await page.getByRole('button', { name: /THROW A TOMATO/ }).click();
+    await page.locator('.club-tomato-readout').getByText(/INCOMING TOMATO: CENTER/).waitFor({ timeout: 5000 });
+    await page.getByRole('button', { name: 'Dodge left' }).click();
+    await page.locator('.club-tomato-readout').getByText(/DODGED/).waitFor({ timeout: 5000 });
+    await page.getByRole('button', { name: /THROW A TOMATO/ }).click();
+    await page.locator('.club-tomato-readout').getByText(/INCOMING TOMATO: RIGHT/).waitFor({ timeout: 5000 });
+    await page.getByRole('button', { name: 'Dodge right' }).click();
+    await page.locator('.club-tomato-readout').getByText(/SPLAT/).waitFor({ timeout: 5000 });
+    if (await page.locator('.club-manager-reports article').count() !== 2)
+      throw new Error('Mabel did not file both tomato incident reports.');
+    const downloadEvent = page.waitForEvent('download');
+    await page.getByRole('button', { name: /EXPORT REPORTS/ }).click();
+    const reportDownload = await downloadEvent;
+    if (!reportDownload.suggestedFilename().endsWith('.json'))
+      throw new Error('Incident export did not produce a JSON archive.');
     if (await page.locator('.club-badge.unlocked').count() < 2)
       throw new Error('Club achievements were not awarded.');
 
@@ -77,9 +93,14 @@ async function run() {
     await page.getByText(setup).first().waitFor({ timeout: 10000 });
     if (await page.locator('.club-badge.unlocked').count() < 2)
       throw new Error('Club achievements did not persist across page refresh.');
+    if (await page.locator('.club-manager-reports article').count() !== 2)
+      throw new Error('Mabel incident ledger did not persist across page refresh.');
+    await page.getByRole('button', { name: 'CLEAR REPORTS' }).click();
+    await page.getByRole('button', { name: 'CONFIRM CLEAR' }).click();
+    await page.locator('.club-no-reports').waitFor({ timeout: 5000 });
 
     if (errors.length) throw new Error('Browser JavaScript errors:\n' + errors.join('\n'));
-    console.log('PASS: React mounted, terminal rendered, Comedy Club props/duel/badges worked and persisted, writer saved and persisted, no page errors. Base: ' + base);
+    console.log('PASS: React mounted, terminal rendered, Comedy Club tomato dodges/ledger, props/duel/badges, and writer persisted, no page errors. Base: ' + base);
   } finally {
     if (browser) await browser.close();
     server.kill('SIGTERM');
