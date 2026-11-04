@@ -25,6 +25,10 @@ npm run build
 
 This is a static React + Vite SPA with `netlify.toml` committed. Connect this repository to Netlify, use `npm run build`, and publish `dist`. The same `dist` can be deployed to another static host.
 
+### GitHub Pages
+
+After merging PR #1, choose **Settings → Pages → Build and deployment → Source: GitHub Actions**. The included `.github/workflows/pages.yml` builds with base `/PhiLowe/` and automatically publishes on `main` pushes to `https://michaelwave369.github.io/PhiLowe/` once Pages is enabled. This URL is a deployment target, not a claim that a deploy already exists.
+
 ## Historical links
 
 Primary source: [Al Lowe's Humor Site](https://allowe.com/) and the original [biography](https://allowe.com/al/bio1.html), [game information](https://allowe.com/welcome.html), and [discography](https://allowe.com/al/discography.html).
