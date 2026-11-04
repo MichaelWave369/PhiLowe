@@ -338,3 +338,58 @@
 .club-incident-log p{color:#aa98b9;font:12px/1.5 'DM Mono',monospace}
 @media(max-width:760px){.club-prop-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}.club-duel-heading{flex-direction:column;align-items:stretch}.club-extra-heading{flex-direction:column;align-items:flex-start}.club-extra-heading small{text-align:left}.club-chaos-effect{left:63%;top:111px}.chaos-banana{top:205px;left:20%}.chaos-trapdoor{top:234px;left:25%}}
 @media(prefers-reduced-motion:reduce){.club-chaos-effect,.club-confetti-pieces{animation:none!important}}
+
+
+/* Rung 7: Tomato Night, stage movement, and Mabel Carbon-Copy's desk */
+.club-actor-placement{position:absolute;inset:0;z-index:6;pointer-events:none}
+.club-actor-placement .club-performer{transition:left .22s ease,filter .22s ease}
+.club-actor-placement.club-dodged-left .club-performer{left:calc(50% - 148px)}
+.club-actor-placement.club-dodged-right .club-performer{left:calc(50% + 65px)}
+.club-actor-placement.club-dodged-center .club-performer{filter:drop-shadow(0 5px 0 #1b152a);transform:scaleY(.72);transform-origin:bottom}
+.club-actor-placement.club-tomato-splat .club-performer:after{content:'🍅';position:absolute;top:20px;left:42px;z-index:10;font-size:34px;transform:rotate(-18deg);filter:drop-shadow(0 3px #611e30)}
+.club-tomato-projectile{position:absolute;z-index:10;top:158px;left:70%;font-size:45px;pointer-events:none;filter:drop-shadow(3px 4px 0 #401e2f);animation:club-tomato-arc 1.15s cubic-bezier(.2,.8,.2,1) 1 both}
+.club-tomato-projectile.incoming-left{--tomato-x:-130px;--tomato-y:5px}
+.club-tomato-projectile.incoming-center{--tomato-x:-65px;--tomato-y:23px}
+.club-tomato-projectile.incoming-right{--tomato-x:15px;--tomato-y:5px}
+.club-tomato-projectile.missed{opacity:.55;filter:grayscale(.4)}
+.club-tomato-projectile.splatted{filter:drop-shadow(0 0 10px #c94757);transform:scale(1.25)}
+@keyframes club-tomato-arc{0%{transform:translate(230px,-120px) rotate(0);opacity:0}35%{opacity:1}85%{transform:translate(var(--tomato-x),var(--tomato-y)) rotate(270deg)}100%{transform:translate(var(--tomato-x),var(--tomato-y)) rotate(360deg);opacity:1}}
+.club-tomato-game{border-top:1px solid #866178;background:linear-gradient(120deg,#39283b,#231a35);padding:18px}
+.club-tomato-heading{display:flex;justify-content:space-between;align-items:center;gap:15px}
+.club-tomato-heading>div{display:flex;flex-direction:column;gap:6px}
+.club-tomato-heading span{font:800 12px 'DM Mono',monospace;color:#f5d48d}
+.club-tomato-heading small{font:10px/1.55 'DM Mono',monospace;color:#cfb7c5}
+.club-tomato-heading button{background:#f1c87a;color:#33213d;border:0;font:800 11px 'DM Mono',monospace;padding:14px;cursor:pointer;white-space:nowrap}
+.club-tomato-heading button:hover:not(:disabled){background:#ffe0a0}
+.club-tomato-heading button:disabled{opacity:.48;cursor:not-allowed}
+.club-tomato-readout{margin-top:16px;min-height:66px;padding:14px 16px;background:#211728;border:1px solid #8b677c;color:#ffe1bb;font:12px/1.65 'DM Mono',monospace}
+.club-tomato-lanes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:11px}
+.club-tomato-lanes button{padding:14px 9px;background:#493352;border:1px solid #876987;color:#f4dbb8;font:800 11px 'DM Mono',monospace;cursor:pointer}
+.club-tomato-lanes button:hover:not(:disabled){background:#73506d;border-color:#f7d18a}
+.club-tomato-lanes button:disabled{opacity:.42;cursor:not-allowed}
+.club-tomato-tally{display:flex;flex-wrap:wrap;justify-content:space-between;gap:9px;margin-top:14px;color:#dcb5ba;font:10px 'DM Mono',monospace}
+.club-manager-desk{border:2px solid #b99577;margin-top:27px;background:#e6d0ad;color:#31243a;box-shadow:7px 7px 0 #0c0918;padding:26px}
+.club-manager-head{display:flex;align-items:center;gap:18px;padding-bottom:19px;border-bottom:2px solid #a88883}
+.club-manager-avatar{width:76px;height:76px;display:grid;place-items:center;background:#413149;border:4px double #a9897f;border-radius:9px;font-size:37px;flex:none}
+.club-manager-head span{font:800 10px 'DM Mono',monospace;color:#865669;letter-spacing:.04em}
+.club-manager-head h3{font:800 clamp(23px,3vw,37px) 'Syne',sans-serif;margin:5px 0;letter-spacing:-.045em;color:#35253d}
+.club-manager-head p{font:13px/1.5 'Space Grotesk',sans-serif;margin:0;color:#70566c}
+.club-manager-toolbar{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:20px 0 13px}
+.club-manager-toolbar>div:first-child{display:flex;flex-direction:column;gap:7px}
+.club-manager-toolbar strong{font:800 14px 'DM Mono',monospace;color:#3e2943}
+.club-manager-toolbar small{font:10px/1.5 'DM Mono',monospace;color:#826676}
+.club-manager-toolbar>div:last-child{display:flex;gap:7px;flex-wrap:wrap}
+.club-manager-toolbar button{background:#3c2a47;color:#f2d9b4;font:700 10px 'DM Mono',monospace;cursor:pointer;padding:12px;border:1px solid #6a496a}
+.club-manager-toolbar button:hover:not(:disabled){background:#674c65}
+.club-manager-toolbar button:disabled{opacity:.5;cursor:not-allowed}
+.club-manager-status{font:11px/1.6 'DM Mono',monospace;color:#7c5362;background:#f2e2c6;padding:12px;margin:0 0 14px;border-left:3px solid #ad7b82}
+.club-manager-reports{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;max-height:510px;overflow:auto}
+.club-manager-reports article{border:1px dashed #b59b88;background:#f8e6c8;padding:15px}
+.club-manager-reports article>div{display:flex;justify-content:space-between;gap:14px;font:9px 'DM Mono',monospace;color:#825b6b}
+.club-manager-reports article>div strong{color:#965068}
+.club-manager-reports article h4{font:800 15px/1.45 'Syne',sans-serif;margin:11px 0 7px;color:#352542}
+.club-manager-reports article p{font:12px/1.55 'Space Grotesk',sans-serif;color:#70576e;margin:7px 0}
+.club-no-reports{grid-column:1/-1;color:#725a6a;font:12px/1.6 'DM Mono',monospace}
+.club-manager-footnote{color:#806473;font:10px/1.7 'DM Mono',monospace;margin:18px 0 0}
+@media(max-width:760px){.club-tomato-heading{align-items:stretch;flex-direction:column}.club-tomato-lanes{grid-template-columns:1fr}.club-manager-desk{padding:16px}.club-manager-avatar{width:56px;height:56px;font-size:25px}.club-manager-head{align-items:flex-start}.club-manager-head h3{font-size:22px}.club-manager-toolbar{flex-direction:column;align-items:stretch}.club-manager-reports{grid-template-columns:1fr}.club-tomato-projectile{font-size:32px}}
+@media(prefers-reduced-motion:reduce){.club-tomato-projectile{animation:none!important;left:calc(50% + var(--tomato-x));top:190px}.club-actor-placement .club-performer{transition:none!important}}
