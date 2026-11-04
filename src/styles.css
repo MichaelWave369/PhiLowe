@@ -148,3 +148,123 @@
 .writer-section button:focus-visible,.writer-section input:focus-visible,.writer-section textarea:focus-visible,.writer-section select:focus-visible{outline:3px solid #e7b273;outline-offset:2px}
 @media(max-width:950px){.writer-columns{grid-template-columns:1fr}.writer-preview{min-height:350px}.writer-vault-list{grid-template-columns:1fr}}
 @media(max-width:760px){.writer-section{padding:73px 0}.writer-stats{gap:6px}.writer-stats>div{padding:13px}.writer-stats strong{font-size:31px}.writer-stats span,.writer-stats small{font-size:8px}.writer-form{padding:17px}.writer-vault{padding:15px}.writer-vault-head,.writer-vault-filters{align-items:stretch;flex-direction:column}.writer-vault-filters label{max-width:none}.writer-preview{padding:24px 20px}.writer-bar{flex-wrap:wrap;font-size:9px}}
+
+
+/* PhiLowe Comedy Club: an original offline pixel-art theater */
+.club-section{padding:112px 0 105px;background:radial-gradient(ellipse at 52% 0%,#36294e 0%,#171024 64%,#110d1c 100%);border-top:1px solid #725176;border-bottom:1px solid #725176;color:#f5e4ce;position:relative}
+.club-heading .section-heading h2{color:#ffe1ad}
+.club-heading h2{font-size:clamp(41px,5.3vw,73px)!important}
+.club-heading h2 span{color:#f1ab9c}
+.club-heading>p:not(.superlabel){color:#c8b7cb}
+.club-layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(275px,.7fr);gap:0;border:4px solid #e5bc8c;box-shadow:12px 12px 0 #0e0919;margin-top:42px;background:#1d1730}
+.club-venue{min-width:0}
+.club-housebar{background:#523755;display:flex;align-items:center;justify-content:space-between;gap:18px;color:#f9d298;padding:14px 19px;font:700 10px 'DM Mono',monospace;letter-spacing:.07em}
+.club-live-dot{display:inline-block;width:7px;height:7px;background:#a1e0ba;border-radius:50%;box-shadow:0 0 10px #9fdec1;margin-right:5px}
+.club-scene{height:415px;overflow:hidden;position:relative;background:radial-gradient(ellipse at 50% 25%,#6b456c 0%,#443052 46%,#261b3c 82%);border-bottom:9px solid #bf8b6f;isolation:isolate}
+.club-scene-mint{background:radial-gradient(ellipse at 50% 25%,#3e776c,#3d3864 60%,#241b39)}
+.club-scene-pink{background:radial-gradient(ellipse at 50% 25%,#9e5378,#503057 60%,#241b39)}
+.club-scene-gold{background:radial-gradient(ellipse at 50% 25%,#937049,#51334e 60%,#241b39)}
+.club-scene-cyan{background:radial-gradient(ellipse at 50% 25%,#356b82,#34375b 60%,#241b39)}
+.club-scene-lavender{background:radial-gradient(ellipse at 50% 25%,#6757a1,#43345d 60%,#241b39)}
+.club-stars{position:absolute;left:8%;right:8%;top:47px;text-align:center;letter-spacing:31px;color:#f7d5a3;font-size:17px;opacity:.72}
+.club-neon{position:absolute;left:50%;top:18px;transform:translateX(-50%);padding:10px 24px;min-width:max-content;text-align:center;font:800 clamp(16px,2vw,26px) 'Syne',sans-serif;letter-spacing:.02em;color:#f9d69c;text-shadow:0 0 10px #fcb775,0 0 24px #ea82b4;z-index:5;border:2px solid #db9e91;background:#322341d9;box-shadow:0 0 12px #e77fb955}
+.club-neon span{color:#f3a6b2;font-size:.75em}
+.club-curtain{position:absolute;top:0;height:100%;width:26%;z-index:3;background:repeating-linear-gradient(90deg,#47203c 0 18px,#7d324e 18px 35px,#9e435e 35px 47px,#542642 47px 60px);box-shadow:0 0 24px #090a23;pointer-events:none}
+.club-curtain-left{left:-16%;transform:skew(-7deg)}
+.club-curtain-right{right:-16%;transform:skew(7deg)}
+.club-spot{position:absolute;left:50%;top:-80px;transform:translateX(-50%);height:380px;width:330px;clip-path:polygon(42% 0%,58% 0%,100% 100%,0% 100%);background:linear-gradient(#ffe9aa13,#ffe9ab65);z-index:1;pointer-events:none}
+.club-stagefloor{position:absolute;bottom:47px;left:0;right:0;height:35px;background:repeating-linear-gradient(90deg,#734a55 0 55px,#855768 55px 110px);border-top:7px solid #e2a783;z-index:5}
+.club-micstand{position:absolute;bottom:62px;left:calc(50% + 52px);width:5px;height:123px;background:#b2acbd;z-index:7;box-shadow:2px 0 #4a3e50}
+.club-micstand:before{content:'';position:absolute;width:32px;height:20px;left:-13px;top:-15px;background:#ddcebd;border:4px solid #57516a;border-radius:13px}
+.club-micstand:after{content:'';position:absolute;width:65px;height:6px;left:-30px;bottom:-4px;background:#6d596d}
+.club-micstand span{position:absolute;top:23px;left:-2px;width:43px;height:4px;background:#b2acbd;transform:rotate(-20deg);transform-origin:0% 50%}
+.club-performer{position:absolute;bottom:72px;left:calc(50% - 65px);width:90px;height:205px;z-index:6;filter:drop-shadow(5px 9px 0 #1b152a);transform-origin:50% 100%;--suit:#78c1ab;--trim:#dcbe84;--skin:#e8b493;--hair:#30263c}
+.club-person-mint{--suit:#63c9ac;--trim:#e7c47c;--skin:#eebd9e;--hair:#363047}
+.club-person-pink{--suit:#e889aa;--trim:#ffe0ac;--skin:#d8a47e;--hair:#58304a}
+.club-person-gold{--suit:#e9bd70;--trim:#68455a;--skin:#efbe95;--hair:#d4d0c2}
+.club-person-cyan{--suit:#71cbe6;--trim:#f3b17b;--skin:#c99373;--hair:#2c2852}
+.club-person-lavender{--suit:#b995e9;--trim:#e6d2a0;--skin:#eab397;--hair:#6a4e88}
+.club-person-hair{position:absolute;left:20px;top:3px;width:51px;height:54px;background:var(--hair);border-radius:13px 13px 6px 6px}
+.club-person-face{position:absolute;left:24px;top:13px;width:43px;height:55px;border-radius:7px 7px 12px 12px;background:var(--skin);border:4px solid #4c3449;color:#372945;font:800 19px 'DM Mono',monospace;display:flex;align-items:center;flex-direction:column;z-index:2}
+.club-person-eyes{white-space:nowrap;font-size:13px;line-height:24px}
+.club-person-smile{font-size:22px;line-height:18px}
+.club-person-body{position:absolute;left:10px;top:72px;width:72px;height:90px;display:grid;place-items:center;color:var(--trim);background:var(--suit);border:7px solid #31223b;clip-path:polygon(0 18%,21% 0,79% 0,100% 18%,92% 100%,8% 100%);font:800 35px 'Syne',sans-serif}
+.club-person-legs{position:absolute;left:26px;bottom:0;height:50px;width:46px;display:flex;gap:7px}
+.club-person-legs span{background:#31263f;width:19px;height:50px;box-shadow:0 8px 0 #151324}
+.club-person-shadow{position:absolute;bottom:-9px;left:5px;width:85px;height:9px;background:#231a35;border-radius:50%}
+.club-dancing{animation:club-bob .45s infinite alternate}
+@keyframes club-bob{0%{transform:rotate(-2deg)}100%{transform:rotate(3deg) translateY(-5px)}}
+.club-idle{position:absolute;z-index:4;left:50%;top:38%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:11px;color:#fae0b4;text-align:center;min-width:70%;font:10px 'DM Mono',monospace}
+.club-idle strong{font:800 clamp(18px,2.8vw,29px) 'Syne',sans-serif}
+.club-idle-glyph{font:80px Georgia,serif;color:#f6bb99b3}
+.club-crowd{position:absolute;z-index:9;bottom:0;left:0;width:100%;height:64px;display:flex;justify-content:space-around;align-items:end;pointer-events:none;background:linear-gradient(0deg,#120e23 0%,transparent 100%)}
+.club-crowd>span{position:relative;font-size:35px;line-height:35px;color:#141024;transform:translateY(calc(var(--seat) * 3px))}
+.club-crowd>span:nth-child(3n){color:#27192f}
+.club-crowd>span i{display:block;width:26px;height:27px;background:#181124;position:absolute;top:25px;left:3px;border-radius:9px 9px 0 0}
+.club-crowd-active>span:nth-child(odd){animation:club-bob .35s 3 alternate}
+.club-scene-caption{position:absolute;left:12px;right:12px;bottom:5px;color:#aa94ab;font:8px 'DM Mono',monospace;z-index:11;text-align:center}
+.club-spotlight-copy{padding:24px 30px 27px;background:#1d172d;min-height:273px}
+.club-speaker{display:flex;flex-wrap:wrap;gap:15px;align-items:baseline;border-bottom:1px dashed #59465e;padding-bottom:12px}
+.club-speaker span:first-child{font:800 19px 'Syne',sans-serif;color:#f0bd85}
+.club-speaker span:last-child{color:#a99ab4;font:10px 'DM Mono',monospace}
+.club-speech{max-width:760px;padding:17px 0 6px}
+.club-speech .club-intro{font:italic 14px/1.6 'Space Grotesk',sans-serif;color:#c6aec2;margin:0 0 12px}
+.club-speech h3{font:800 clamp(21px,2.5vw,30px)/1.3 'Syne',sans-serif;color:#ffe2b5;letter-spacing:-.02em;margin:0 0 16px;white-space:pre-wrap;overflow-wrap:anywhere}
+.club-speech .club-punchline{font:700 clamp(16px,1.8vw,21px)/1.5 'Space Grotesk',sans-serif;background:#f4deb5;color:#30233b;margin:0;padding:15px 19px;border-left:6px solid #db8690;white-space:pre-wrap;overflow-wrap:anywhere}
+.club-unrevealed{font:10px 'DM Mono',monospace;color:#a68dab;letter-spacing:.05em}
+.club-heckle-dialog{padding:13px 16px;margin-top:14px;border:1px solid #d99bab;background:#4a2b49;display:flex;gap:8px;flex-direction:column}
+.club-heckle-dialog span{font:10px/1.5 'DM Mono',monospace;color:#e2b7cb}
+.club-heckle-dialog strong{font:700 13px/1.5 'Space Grotesk';color:#f9d7a4}
+.club-console{background:#30253d;border-top:2px solid #7b5770}
+.club-controls{display:grid;grid-template-columns:1.2fr 1fr 1fr}
+.club-controls button{border:0;border-right:1px solid #6c506c;background:#49344c;color:#f5d4aa;cursor:pointer;padding:19px 10px;font:800 11px 'DM Mono',monospace}
+.club-controls .club-main-button{background:#f2c978;color:#2e2139}
+.club-controls .club-auto-on{background:#7a455a;color:#ffdfb9}
+.club-controls button:hover:not(:disabled){filter:brightness(1.14)}
+.club-controls button:disabled,.club-reactions button:disabled{opacity:.45;cursor:not-allowed}
+.club-reactions{display:flex;gap:9px;flex-wrap:wrap;padding:13px 18px}
+.club-reactions button{padding:11px 15px;background:#41304c;color:#f2d3be;border:1px solid #715773;cursor:pointer;font:700 10px 'DM Mono',monospace}
+.club-reactions button.selected,.club-reactions button:hover:not(:disabled){background:#85616e;color:#ffe9ba}
+.club-keyhint{font:9px/1.7 'DM Mono',monospace;padding:0 18px 12px;color:#afa0b8;margin:0}
+.club-keyhint kbd{background:#443352;border:1px solid #6e5172;padding:1px 4px}
+.club-side{border-left:2px solid #7a5775;background:#231a32;min-width:0}
+.club-sideheader{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:17px;background:#3c2b48;font:700 10px 'DM Mono',monospace;color:#e8c996}
+.club-sideheader span{color:#b4a0b6}
+.club-roster{padding:12px}
+.club-roster-card{display:flex;gap:10px;align-items:center;border:1px solid #5e485f;background:#2d213b;padding:12px 10px;margin-bottom:8px;position:relative}
+.club-roster-card.playing{border-color:#f0c578;background:#4b3252}
+.club-roster-avatar{width:49px;height:49px;flex:none;display:grid;place-items:center;border:3px solid #211a30;font:800 27px 'Syne',sans-serif;color:#292037}
+.club-avatar-mint{background:#75d1ae}.club-avatar-pink{background:#e7a0b6}.club-avatar-gold{background:#f2c777}.club-avatar-cyan{background:#8ad5e9}.club-avatar-lavender{background:#c4ace6}
+.club-roster-card>div:nth-child(2){display:flex;flex-direction:column;gap:4px;min-width:0}
+.club-roster-card>div:nth-child(2)>span{font:8px 'DM Mono',monospace;color:#b5a3b9}
+.club-roster-card strong{font:800 13px 'Syne',sans-serif;color:#ffe0b6}
+.club-roster-card small{font:10px/1.3 'Space Grotesk';color:#bdb0c4}
+.club-roster-indicator{position:absolute;top:7px;right:5px;font:7px 'DM Mono',monospace;color:#b5f5ce}
+.club-audience-stats{padding:19px;border-top:1px solid #71546f}
+.club-stats-heading{font:700 10px 'DM Mono',monospace;color:#f0ce8e}
+.club-statrow{display:grid;grid-template-columns:1fr auto 1fr auto;gap:7px;align-items:center;margin:16px 0;font:9px 'DM Mono',monospace;color:#d4baca}
+.club-statrow strong{color:#ffdda4;font-size:18px}
+.club-meter{height:11px;border:1px solid #766176;background:#100d1b;overflow:hidden}
+.club-meter div{height:100%;background:linear-gradient(90deg,#c96b89,#f1cd86,#9ae3b9);transition:width .3s ease}
+.club-audience-stats p{font:700 14px 'Syne',sans-serif;color:#f3d39b;margin:13px 0}
+.club-audience-stats small{font:9px/1.6 'DM Mono',monospace;color:#b4a4bc}
+.club-billboard{border-top:1px dashed #765575;margin:5px 18px 20px;padding-top:22px}
+.club-billboard span{display:block;color:#b6a6c2;font:10px 'DM Mono',monospace}
+.club-billboard strong{display:block;font:800 20px 'Syne',sans-serif;color:#f3d5a5;margin:8px 0}
+.club-billboard p{font:12px/1.7 'Space Grotesk',sans-serif;color:#c2b0c2}
+.club-billboard a{display:inline-block;margin-top:5px;color:#f0ca84;font:700 11px 'DM Mono',monospace}
+.club-aftershow{border:1px solid #6d5072;background:#22172e;margin-top:26px;padding:24px;display:grid;grid-template-columns:210px 1fr;gap:20px}
+.club-aftershow>div:first-child span{font:10px 'DM Mono',monospace;color:#c6a8a9}
+.club-aftershow h3{font:800 25px 'Syne',sans-serif;color:#f1ce92;margin:7px 0}
+.club-history{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.club-history>div{padding:12px;background:#342440;border:1px solid #59415d}
+.club-history>div span{display:block;font:9px 'DM Mono',monospace;color:#d6ab9d}
+.club-history>div strong{display:block;font:700 12px 'Syne',sans-serif;color:#f8d5ab;margin:7px 0}
+.club-history>div p{font:11px/1.5 'Space Grotesk',sans-serif;color:#bfaabd;overflow-wrap:anywhere}
+.club-history-empty{color:#ae9db7;font:12px/1.6 'DM Mono',monospace}
+.club-disclaimer{font:10px/1.7 'DM Mono',monospace;color:#9e90ad;margin:22px 0 0}
+.club-section button:focus-visible,.club-section a:focus-visible,.club-section:focus-visible{outline:3px solid #f9ce84;outline-offset:3px}
+@media(max-width:1020px){.club-layout{grid-template-columns:1fr}.club-side{border-left:0;border-top:2px solid #70516e}.club-roster{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.club-roster-card{margin:0}.club-audience-stats{max-width:none}.club-history{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.club-section{padding:72px 0}.club-scene{height:335px}.club-neon{font-size:17px;padding:10px}.club-performer{transform:scale(.85);transform-origin:bottom}.club-spotlight-copy{padding:19px}.club-controls{grid-template-columns:1fr}.club-controls button{border-bottom:1px solid #6c506c;padding:15px}.club-aftershow{grid-template-columns:1fr}.club-history{grid-template-columns:1fr}.club-roster{grid-template-columns:1fr}.club-speech h3{font-size:23px}.club-housebar{font-size:9px}}
+@media(max-width:390px){.club-scene{height:300px}.club-neon{font-size:13px}.club-performer{left:calc(50% - 75px)}.club-micstand{left:calc(50% + 35px)}}
+@media(prefers-reduced-motion:reduce){.club-dancing,.club-crowd-active>span{animation:none!important}.club-meter div{transition:none}}
