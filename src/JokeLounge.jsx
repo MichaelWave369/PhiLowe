@@ -1,6 +1,7 @@
 import React,{useMemo,useRef,useState,useEffect} from 'react';
 import {JOKES,JOKE_CATEGORIES} from './jokes.js';
 import {drawJoke} from './jokeEngine.js';
+import {onStage} from './writerRoomStore.js';
 
 const FAVORITES_KEY='philowe.jokes.favorites.v1';
 const REACTIONS_KEY='philowe.jokes.reactions.v1';
@@ -19,6 +20,9 @@ function stored(key,fallback){
   try {const val=JSON.parse(window.localStorage.getItem(key));return val??fallback;}
   catch{return fallback;}
 }
+function belongsToCategory(j,category,favorites){
+  return category==='all'||(category==='mine'&&j.id.startsWith('CW-'))||(category==='favorites'&&favorites.includes(j.id))||j.category===category;
+}
 function pick(pool,key,decks,previous){
   if(!pool.length)return null;
   let cache=decks.current.get(key);
@@ -28,14 +32,16 @@ function pick(pool,key,decks,previous){
   return found;
 }
 
-export default function JokeLounge({beep}){
+export default function JokeLounge({beep,customJokes=[]}){
+  const published=useMemo(()=>onStage(customJokes),[customJokes]);
+  const catalog=useMemo(()=>[...JOKES,...published],[published]);
   const [category,setCategory]=useState('all');
   const [query,setQuery]=useState('');
   const [current,setCurrent]=useState(JOKES[0]);
   const [revealed,setRevealed]=useState(false);
   const [favorites,setFavorites]=useState(()=>{
     const v=stored(FAVORITES_KEY,[]);
-    const allowed=new Set(JOKES.map(j=>j.id));
+    const allowed=new Set(catalog.map(j=>j.id));
     return Array.isArray(v)?v.filter(id=>allowed.has(id)):[];
   });
   const [reactions,setReactions]=useState(()=>{
@@ -48,15 +54,25 @@ export default function JokeLounge({beep}){
   const [served,setServed]=useState(0);
   const searchable=useMemo(()=>{
     const needle=query.trim().toLowerCase();
-    return JOKES.filter(j=>(category==='all'||(category==='favorites'?favorites.includes(j.id):j.category===category))&&(!needle||[j.setup,j.punchline,j.category,j.id].some(t=>t.toLowerCase().includes(needle))));
-  },[category,query,favorites]);
+    return catalog.filter(j=>belongsToCategory(j,category,favorites)&&(!needle||[j.setup,j.punchline,j.category,j.id].some(t=>t.toLowerCase().includes(needle))));
+  },[catalog,category,query,favorites]);
+  useEffect(()=>{
+    if(!current)return;
+    const match=catalog.find(j=>j.id===current.id);
+    if(!match){setCurrent(catalog[0]||null);setRevealed(false);}
+    else if(match!==current){setCurrent(match);setRevealed(false);}
+  },[catalog]);
+  useEffect(()=>{
+    const valid=new Set(catalog.map(j=>j.id));
+    setFavorites(old=>{const next=old.filter(id=>valid.has(id));return next.length===old.length?old:next;});
+  },[catalog]);
 
   useEffect(()=>{try{window.localStorage.setItem(FAVORITES_KEY,JSON.stringify(favorites));}catch{}},[favorites]);
   useEffect(()=>{try{window.localStorage.setItem(REACTIONS_KEY,JSON.stringify(reactions));}catch{}},[reactions]);
 
   function selectNext(nextCategory=category,nextQuery=query,nextFavorites=favorites){
     const search=nextQuery.trim().toLowerCase();
-    const pool=JOKES.filter(j=>(nextCategory==='all'||(nextCategory==='favorites'?nextFavorites.includes(j.id):j.category===nextCategory))&&(!search||[j.setup,j.punchline,j.category,j.id].some(t=>t.toLowerCase().includes(search))));
+    const pool=catalog.filter(j=>belongsToCategory(j,nextCategory,nextFavorites)&&(!search||[j.setup,j.punchline,j.category,j.id].some(t=>t.toLowerCase().includes(search))));
     const key=nextCategory+'/'+search+'/'+(nextCategory==='favorites'?nextFavorites.join(','):'');
     const joke=pick(pool,key,decks,current);
     setCurrent(joke);setRevealed(false);setNotice('');setHeckle('');
@@ -89,7 +105,7 @@ export default function JokeLounge({beep}){
   async function copy(){
     if(!current)return;
     try{
-      await navigator.clipboard.writeText(current.setup+'\n'+current.punchline+'\n\nOriginal joke from PhiLowe — independent fan tribute to Al Lowe.');
+      await navigator.clipboard.writeText(current.setup+'\n'+current.punchline+'\n\n'+(current.id.startsWith('CW-')?'Written in PhiLowe Writer Room.':'Original joke from PhiLowe — independent fan tribute to Al Lowe.'));
       setNotice('JOKE COPIED. DISTRIBUTE RESPONSIBLY.');
     }catch{setNotice('COPY BLOCKED BY BROWSER. SELECT THE TEXT TO SHARE.');}
   }
@@ -109,7 +125,7 @@ export default function JokeLounge({beep}){
         <div className="pixel-rule lounge-rule"><span>03 / THE CYBERJOKE 3690</span><span className="rule-line"/><span className="rule-end">✦</span></div>
         <p className="superlabel">AUTOMATED COMEDY // QUESTIONABLE QUALITY CONTROL</p>
         <h2>THE LAUGH<br/><span>LOUNGE IS OPEN.</span></h2>
-        <p>{JOKES.length} original jokes, eight ridiculous departments, zero photocopied punchlines. Browse the archive, heckle the act, or collect your favorite groaners.</p>
+        <p>{JOKES.length} original house jokes plus {published.length} of your own, across eight ridiculous departments. Draft your material in the Writer Room and put it on stage when ready. Browse the archive, heckle the act, or collect your favorite groaners.</p>
       </div>
       <div className="joke-theater">
         <div className="joke-main">
@@ -117,7 +133,7 @@ export default function JokeLounge({beep}){
           <div className="joke-stage">
             <div className="joke-spotlight" aria-hidden="true"/><div className="joke-mic" aria-hidden="true">♩</div>
             <div className="joke-content" aria-live="polite">
-              <span className="joke-chip">{currentCategory?.label||'EMPTY STAGE'}</span>
+              <span className="joke-chip">{current?.id.startsWith('CW-')?'YOUR JOKE · ':''}{currentCategory?.label||'EMPTY STAGE'}</span>
               <h3>{current?current.setup:'No jokes match this search. Apparently the archive has standards.'}</h3>
               {current&&<div className={'joke-punch '+(revealed?'visible':'concealed')}>
                 {revealed?<p>{current.punchline}</p>:<p className="joke-wait">[ PRESS REVEAL TO DELIVER THE PUNCHLINE ]</p>}
@@ -135,13 +151,14 @@ export default function JokeLounge({beep}){
             <button type="button" disabled={!current} aria-pressed={!!current&&favorites.includes(current.id)} className={current&&favorites.includes(current.id)?'voted':''} onClick={favorite}>{current&&favorites.includes(current.id)?'♥ SAVED':'♡ SAVE'}</button>
             <button type="button" disabled={!current} onClick={copy}>▤ COPY</button>
           </div>
-          <div className="joke-stage-footer" aria-live="polite"><span>{notice||'100% ORIGINAL GAGS · SAVED ITEMS STAY ON THIS DEVICE'}</span><span>SETUPS SERVED: {served}</span></div>
+          <div className="joke-stage-footer" aria-live="polite"><span>{notice||'ORIGINAL HOUSE GAGS + YOUR MATERIAL · STORED ON THIS DEVICE'}</span><span>SETUPS SERVED: {served}</span></div>
         </div>
         <aside className="joke-sidebar">
           <div className="joke-sidebar-top"><span>CHOOSE YOUR POISON</span><span>◉ ONLINE(ISH)</span></div>
           <div className="joke-categories" role="group" aria-label="Joke categories">
-            <button className={category==='all'?'selected':''} aria-pressed={category==='all'} onClick={()=>chooseCategory('all')}>✦ ALL DEPARTMENTS <span>{JOKES.length}</span></button>
-            {JOKE_CATEGORIES.map(c=><button key={c.id} className={category===c.id?'selected':''} aria-pressed={category===c.id} onClick={()=>chooseCategory(c.id)}><span className="category-icon">{c.icon}</span>{c.label}<span>{JOKES.filter(j=>j.category===c.id).length}</span></button>)}
+            <button className={category==='all'?'selected':''} aria-pressed={category==='all'} onClick={()=>chooseCategory('all')}>✦ ALL DEPARTMENTS <span>{catalog.length}</span></button>
+            {JOKE_CATEGORIES.map(c=><button key={c.id} className={category===c.id?'selected':''} aria-pressed={category===c.id} onClick={()=>chooseCategory(c.id)}><span className="category-icon">{c.icon}</span>{c.label}<span>{catalog.filter(j=>j.category===c.id).length}</span></button>)}
+            <button className={category==='mine'?'selected':''} aria-pressed={category==='mine'} onClick={()=>chooseCategory('mine')}>✎ MY JOKES <span>{published.length}</span></button>
             <button className={category==='favorites'?'selected':''} aria-pressed={category==='favorites'} onClick={()=>chooseCategory('favorites')}>♥ MY FAVORITES <span>{favorites.length}</span></button>
           </div>
           <div className="joke-sidebar-info"><span>YOUR PRIVATE SCORECARD</span><div><strong>☺ {laughter}</strong><strong>☹ {groans}</strong><strong>♥ {favorites.length}</strong></div><small>No account, no tracking, no backend. Just browser storage and very questionable jokes.</small></div>
@@ -155,7 +172,7 @@ export default function JokeLounge({beep}){
           {searchable.slice(0,6).map(j=><button type="button" key={j.id} className={'joke-archive-card '+(current?.id===j.id?'active':'')} onClick={()=>{setCurrent(j);setRevealed(false);setNotice('');setHeckle('');beep?.(500,.05)}}><small>{j.id} / {JOKE_CATEGORIES.find(c=>c.id===j.category)?.label}</small><span>{j.setup}</span><b>LOAD THIS SETUP ↗</b></button>)}
           {!searchable.length&&<p className="joke-empty">No matches. Try clearing your search or choosing another department. The comedian has left the building.</p>}
         </div>
-        <p className="joke-archive-note">SHOWING {Math.min(6,searchable.length)} OF {searchable.length} MATCHES · Use ANOTHER JOKE to cycle every matching entry without repeats. All material is original and unaffiliated with Al Lowe.</p>
+        <p className="joke-archive-note">SHOWING {Math.min(6,searchable.length)} OF {searchable.length} MATCHES · Use ANOTHER JOKE to cycle every matching entry without repeats. Independent fan tribute, not affiliated with Al Lowe. Your own submissions remain local to your browser.</p>
       </div>
     </div>
   </section>;
