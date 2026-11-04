@@ -38,3 +38,9 @@ Primary source: [Al Lowe's Humor Site](https://allowe.com/) and the original [bi
 This is an **unofficial fan tribute** and not an Al Lowe, Sierra, or Leisure Suit Larry production. All original page illustrations, interface elements, and the playable mini-adventure are created for PhiLowe. Names of third-party games appear for historical reference only. No game executables, logos, character sprites, or copyrighted artwork are redistributed. No affiliation, permission, or endorsement is implied.
 
 © 2026 Phi369 Labs. MIT license for this original website source; trademarks and third-party works remain with their respective owners.
+
+## CyberJoke 3690 (v2)
+
+The Laugh Lounge now contains **112 original jokes** split into eight categories. It includes a setup/reveal/punchline stage, a no-repeat shuffle-bag player, live joke search, a mini archive, audience heckles, personal laugh/groan reactions, favorites saved in browser local storage, and clipboard sharing. No external service or tracking is needed.
+
+In the retro terminal, run `JOKE`, `JOKE VR`, `JOKE RETRO`, `JOKE LOVE`, `JOKES`, or `HECKLE`. `JOKES` lists all departments. `npm test` checks archive integrity and no-repeat behavior. All jokes are independently written for this project, not Al Lowe quotations or game text.

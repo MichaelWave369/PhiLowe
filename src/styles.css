@@ -4,3 +4,69 @@
 @media(max-width:760px){.wrap{padding-left:20px;padding-right:20px}.announcement span:nth-child(2){display:none}.site-head{height:auto;min-height:76px;flex-wrap:wrap;padding:15px 20px}.logo{font-size:23px}.site-head nav{width:100%;justify-content:space-between;order:3;padding-top:10px;border-top:1px solid #40314e}.site-head nav a{font-size:9px}.sound-btn{margin-left:auto;padding:9px;font-size:9px}.hero{grid-template-columns:1fr;padding:55px 24px 70px;gap:65px}.hero h1{font-size:clamp(48px,11vw,79px)}.hero-copy>p{font-size:15px}.hero-meta{margin-top:28px}.hero-visual{max-width:540px;margin:auto;width:95%}.scene-art{height:300px}.visual-ticket{right:-13px}.intro{padding-top:74px;padding-bottom:70px}.section-heading h2{font-size:clamp(34px,7.4vw,50px)}.timeline{grid-template-columns:1fr}.years{flex-direction:row;overflow:auto;white-space:nowrap;border-right:none;border-bottom:1px solid #5c4564;padding:5px}.years button{font-size:15px;padding:10px 12px;border-left:0;border-bottom:3px solid transparent}.years button.active{border-left:0;border-bottom-color:#f4ce76}.timeline-panel{padding:35px 24px}.timeline-corner{font-size:8px}.gamecards{grid-template-columns:1fr}.gamecard{min-height:205px}.card-glyph{font-size:100px;top:25px}.arcade-section{padding-top:75px;padding-bottom:75px}.adventure-shell{grid-template-columns:1fr}.adventure-controls{border-left:0;border-top:1px solid #5d4769}.adventure-art{height:275px}.inventory{margin-top:15px}.terminal-section{grid-template-columns:1fr;padding-top:70px;padding-bottom:85px}.letter-section{padding:75px 0}.letter-grid{grid-template-columns:1fr}.letter-heart{font-size:85px;margin:25px 0 5px}.letter-paper{padding:30px 26px}.letter-paper p{font-size:15px}.letter-deco{font-size:90px}.outro{padding-top:90px;padding-bottom:90px}.footer-inner{flex-direction:column}.footer-right{text-align:left;align-items:flex-start}}
 @media(max-width:400px){.site-head nav a{font-size:8px}.hero h1{font-size:46px}.btn{font-size:10px;padding:15px}.scene-art{height:255px}.archway{transform:scale(.8);transform-origin:bottom}.visual-ticket{display:none}.adventure-top{font-size:9px}.letter-paper-head{font-size:8px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+
+/* CyberJoke 3690: accessible, responsive comedy lounge */
+.joke-lounge-section{position:relative;padding:116px 0 108px;background:radial-gradient(ellipse at 52% 0%,#473158 0%,#24172f 51%,#171023 100%);border-top:1px solid #846184;border-bottom:1px solid #846184}
+.joke-lounge-section .section-heading{color:#f5d7aa}
+.joke-lounge-section .section-heading h2{font-size:clamp(42px,5.4vw,78px)}
+.joke-lounge-section .section-heading h2 span{color:#eba99d}
+.joke-lounge-section .section-heading>p{color:#c7b8c7}
+.joke-theater{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(275px,.75fr);border:3px solid #e3ad95;box-shadow:12px 12px 0 #120d1b;background:#22182f;color:#fce5d8}
+.joke-main{min-width:0}
+.joke-led,.joke-sidebar-top{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:15px 20px;font:700 10px 'DM Mono',monospace;letter-spacing:.065em;background:#412944;color:#ffcf93;border-bottom:1px solid #785672}
+.joke-led .signal-dot{margin-right:5px;flex:none}
+.joke-number{margin-left:auto;color:#dfaeaa}
+.joke-stage{min-height:365px;display:flex;position:relative;overflow:hidden;background:linear-gradient(180deg,#282045 0%,#4d2c58 65%,#24162f 100%);align-items:center;justify-content:center;padding:50px 36px 43px}
+.joke-spotlight{position:absolute;left:50%;top:-95px;transform:translateX(-50%);width:430px;height:390px;clip-path:polygon(37% 0%,63% 0%,100% 100%,0% 100%);background:linear-gradient(#ffdaa215,#ffdaa22a);pointer-events:none}
+.joke-mic{position:absolute;right:20px;bottom:35px;font:110px Georgia,serif;color:#d7a88424;transform:rotate(10deg)}
+.joke-content{max-width:615px;position:relative;z-index:1;text-align:center;width:100%}
+.joke-chip{display:inline-block;background:#f1c97b;color:#30213c;padding:7px 12px;font:700 11px 'DM Mono',monospace;text-transform:uppercase;letter-spacing:.055em}
+.joke-content h3{font:800 clamp(24px,3vw,40px)/1.22 'Syne',sans-serif;letter-spacing:-.035em;color:#ffe7c7;margin:22px auto 25px;max-width:540px}
+.joke-punch{background:#fae6bb;padding:19px 23px;min-height:80px;color:#311e37;border:2px dashed #b2777c;box-shadow:6px 6px 0 #1b112d}
+.joke-punch p{font:700 17px/1.55 'Space Grotesk',sans-serif;margin:0}
+.joke-punch.concealed{background:#342640;color:#ccaeaf;border-color:#664762;box-shadow:none}
+.joke-punch.concealed .joke-wait{font:10px/1.7 'DM Mono',monospace;letter-spacing:.06em;color:#ceada8}
+.joke-stage-bottom{position:absolute;bottom:11px;color:#9a819e;font:9px 'DM Mono',monospace;text-align:center}
+.joke-actions{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #6b4a66}
+.joke-actions button{border:0;padding:22px 12px;font:800 12px 'DM Mono',monospace;letter-spacing:.02em;cursor:pointer}
+.joke-big-button{color:#302039;background:#f3cf80}
+.joke-next-button{background:#cf99a6;color:#291b37}
+.joke-actions button:hover:not(:disabled){filter:brightness(1.1)}
+.joke-actions button:disabled,.joke-reactions button:disabled{opacity:.46;cursor:not-allowed}
+.joke-reactions{display:flex;gap:8px;flex-wrap:wrap;padding:14px;background:#1c152a}
+.joke-reactions button{cursor:pointer;border:1px solid #6e556f;background:#31243d;color:#f1d4bb;font:700 10px 'DM Mono',monospace;padding:10px 12px}
+.joke-reactions button:hover:not(:disabled),.joke-reactions button.voted{background:#69485f;color:#fff4cd;border-color:#f0c77d}
+.joke-stage-footer{display:flex;justify-content:space-between;gap:15px;border-top:1px solid #634963;color:#ae9da9;padding:12px 17px;font:9px/1.6 'DM Mono',monospace}
+.joke-sidebar{border-left:2px solid #77536e;background:#261b33;display:flex;flex-direction:column;min-width:0}
+.joke-sidebar-top{font-size:9px;background:#2b2038}
+.joke-categories{padding:14px;display:flex;flex-direction:column;gap:5px}
+.joke-categories button{display:flex;align-items:center;gap:11px;text-align:left;background:#30213e;color:#d5c3d4;border:1px solid transparent;padding:12px;font:700 11px 'DM Mono',monospace;cursor:pointer}
+.joke-categories button span:last-child{margin-left:auto;color:#b39ab2}
+.joke-categories button.selected,.joke-categories button:hover{background:#59405a;color:#ffe4b1;border-color:#ac7a8a}
+.joke-categories .category-icon{min-width:18px;color:#f1c884;font-size:15px}
+.joke-sidebar-info{border-top:1px solid #5a4259;margin:8px 17px 0;padding:17px 0}
+.joke-sidebar-info>span{font:700 10px 'DM Mono',monospace;color:#f3c98a}
+.joke-sidebar-info>div{display:flex;justify-content:space-between;margin:18px 0}
+.joke-sidebar-info strong{font:700 16px 'DM Mono',monospace;color:#f6d19d}
+.joke-sidebar-info small{font:11px/1.6 'Space Grotesk';color:#b39eae}
+.heckle-button{background:#d599a6;color:#2c1e37;border:0;padding:15px;font:800 11px 'DM Mono',monospace;margin:8px 17px;cursor:pointer}
+.heckle-button:hover{background:#f4c6a8}
+.heckle-quote{font:italic 13px/1.6 Georgia,serif;color:#cbb3bb;margin:5px 17px 24px;min-height:60px}
+.joke-archive{border:1px solid #70546e;margin-top:29px;background:#20162d;padding:26px 28px}
+.joke-archive-head{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:21px}
+.joke-archive-head>div span{font:10px 'DM Mono',monospace;color:#c08ca5}
+.joke-archive-head h3{font:800 27px 'Syne',sans-serif;color:#f1d29e;margin:8px 0 0}
+.joke-search{display:flex;gap:8px;flex-direction:column;font:10px 'DM Mono',monospace;color:#d0abc0;width:min(100%,330px)}
+.joke-search input{background:#120e1d;border:1px solid #755b79;color:#f2ddcb;border-radius:0;padding:12px;font:12px 'DM Mono',monospace;min-width:0;width:100%}
+.joke-archive-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+.joke-archive-card{display:flex;flex-direction:column;gap:10px;text-align:left;cursor:pointer;min-height:146px;padding:17px;background:#322340;border:1px solid #715270;color:#f4decc}
+.joke-archive-card:hover,.joke-archive-card.active{background:#4b3254;border-color:#e3b780}
+.joke-archive-card small{font:10px 'DM Mono',monospace;color:#ddb28e}
+.joke-archive-card span{font:700 14px/1.45 'Space Grotesk';flex:1}
+.joke-archive-card b{font:9px 'DM Mono',monospace;color:#f1ce85}
+.joke-archive-note{font:10px/1.65 'DM Mono',monospace;color:#a895af;margin:20px 0 0}
+.joke-empty{grid-column:1/-1;padding:25px;color:#dbbdbb}
+.joke-lounge-section button:focus-visible,.joke-lounge-section input:focus-visible{outline:3px solid #f9d07c;outline-offset:2px}
+@media(max-width:950px){.joke-theater{grid-template-columns:1fr}.joke-sidebar{border-left:0;border-top:2px solid #77536e}.joke-categories{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.joke-sidebar-info>div{max-width:300px}.joke-archive-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.joke-lounge-section{padding:72px 0}.joke-stage{padding:40px 16px 42px;min-height:335px}.joke-actions{grid-template-columns:1fr}.joke-categories{grid-template-columns:repeat(2,minmax(0,1fr))}.joke-archive{padding:18px 14px}.joke-archive-grid{grid-template-columns:1fr}.joke-archive-card{min-height:110px}.joke-archive-head{flex-direction:column;align-items:stretch;gap:15px}.joke-search{width:100%}.joke-stage-footer{flex-direction:column}.joke-reactions{gap:6px}}
+@media(max-width:400px){.joke-categories{grid-template-columns:1fr}.joke-led{font-size:9px;padding:13px 11px}.joke-content h3{font-size:25px}}
