@@ -3,6 +3,7 @@ import {JOKES} from './jokes.js';
 import {onStage} from './writerRoomStore.js';
 import {COMEDIANS,GUEST_COMEDIAN,lineupFor,nextClubAct,comebackFor,crowdLabel} from './comedyClubEngine.js';
 import {STAGE_PROPS,BADGES,getProp,duelForAct,answerDuel,earnedBadges,readBadges,writeBadges} from './audienceChaos.js';
+import {LANES,MAX_THROWS_PER_ACT,MANAGER,nextTomato,resolveTomato,incidentReport,trimReports,readReports,writeReports,serializeReportArchive} from './tomatoNight.js';
 
 const HECKLES=[
   'I HAVE HAD LONGER LAUGHS FROM A LOADING SCREEN!',
@@ -51,6 +52,60 @@ export default function ComedyClub({beep,writerJokes=[]}){
     catch{return [];}
   });
   const [eventLog,setEventLog]=useState([]);
+  const [tomato,setTomato]=useState(null);
+  const [tomatoResult,setTomatoResult]=useState(null);
+  const [tomatoAttempts,setTomatoAttempts]=useState(0);
+  const [tomatoDodges,setTomatoDodges]=useState(0);
+  const [tomatoSplats,setTomatoSplats]=useState(0);
+  const [reports,setReports]=useState(()=>{
+    try{return readReports(window.localStorage);}
+    catch{return [];}
+  });
+  const [clearArmed,setClearArmed]=useState(false);
+  const [reportStatus,setReportStatus]=useState('Incident reports are stored locally, not submitted to any bureaucracy.');
+  useEffect(()=>{
+    try{writeReports(window.localStorage,reports);}
+    catch{setReportStatus('Local storage is unavailable. Export the report archive before leaving the page.');}
+  },[reports]);
+  function tossTomato(){
+    if(!act||(tomato&&!tomatoResult)||tomatoAttempts>=MAX_THROWS_PER_ACT)return;
+    const next=nextTomato(act.number,tomatoAttempts);
+    if(!next)return;
+    setTomato(next);
+    setTomatoResult(null);
+    setTomatoAttempts(n=>n+1);
+    logEvent('AUDIENCE TOSSES A TOMATO! TARGET: '+next.lane+'.');
+    beep?.(450,.08);
+  }
+  function chooseDodge(lane){
+    if(!tomato||tomatoResult)return;
+    const resolution=resolveTomato(tomato,lane);
+    if(!resolution)return;
+    setTomatoResult(resolution);
+    if(resolution.dodged)setTomatoDodges(n=>n+1);
+    else setTomatoSplats(n=>n+1);
+    const report=incidentReport(tomato,resolution,act.comedian);
+    if(report)setReports(old=>trimReports([report,...old]));
+    setClearArmed(false);
+    setReportStatus(resolution.outcome+': '+resolution.text);
+    logEvent('TOMATO '+resolution.outcome+': '+act.comedian.name+'.');
+    beep?.(resolution.dodged?880:250,.12);
+  }
+  function exportReports(){
+    try{
+      const blob=new Blob([serializeReportArchive(reports)],{type:'application/json'});
+      const url=URL.createObjectURL(blob);
+      const anchor=document.createElement('a');
+      anchor.href=url;anchor.download='philowe-mabel-incident-reports.json';
+      document.body.appendChild(anchor);anchor.click();anchor.remove();
+      window.setTimeout(()=>URL.revokeObjectURL(url),1500);
+      setReportStatus('Report archive exported. Mabel wants three printed copies.');
+    }catch{setReportStatus('Export failed. The bureaucracy is temporarily unavailable.');}
+  }
+  function clearReports(){
+    if(!clearArmed){setClearArmed(true);setReportStatus('Click CONFIRM CLEAR to erase saved incident reports.');return;}
+    setReports([]);setClearArmed(false);setReportStatus('Incident reports cleared from this browser.');
+  }
   function logEvent(line){setEventLog(old=>[line,...old].slice(0,5));}
   const duel=duelForAct(act);
   const propVisual=stageProp?getProp(stageProp.id):null;
@@ -80,6 +135,9 @@ export default function ComedyClub({beep,writerJokes=[]}){
     setStageProp(null);
     setDuelOpen(false);
     setDuelAnswer(null);
+    setTomato(null);
+    setTomatoResult(null);
+    setTomatoAttempts(0);
     if(next.comedian.id==='guest')setOpenMicPlayed(true);
     setHistory(old=>[{
       number:next.number,who:next.comedian.name,
@@ -158,9 +216,11 @@ export default function ComedyClub({beep,writerJokes=[]}){
     if(key==='h'&&act){e.preventDefault();heckle();}
     if(key==='p'&&act){e.preventDefault();dropProp('chicken');}
     if(key==='d'&&act){e.preventDefault();setDuelOpen(true);}
+    if(key==='t'&&act){e.preventDefault();tossTomato();}
   }
   const applause=keep(50+(laughs-groans)*9,0,100);
   const active=act?.comedian;
+  const dodgeClass=tomatoResult?.dodged?' club-dodged-'+tomatoResult.dodgeLane.toLowerCase():tomatoResult?' club-tomato-splat':'';
   return <section className="club-section" id="comedy-club" aria-labelledby="club-title" tabIndex={0} onKeyDown={handleKeys}>
     <div className="wrap">
       <div className="section-heading centered club-heading">
@@ -178,11 +238,12 @@ export default function ComedyClub({beep,writerJokes=[]}){
             <div className="club-curtain club-curtain-left" aria-hidden="true"/>
             <div className="club-curtain club-curtain-right" aria-hidden="true"/>
             <div className="club-spot" aria-hidden="true"/>
-            {active?<PixelPerformer comedian={active} animated={phase==='punchline'}/>:<div className="club-idle">
+            {active?<div className={'club-actor-placement'+dodgeClass}><PixelPerformer comedian={active} animated={phase==='punchline'}/></div>:<div className="club-idle">
               <strong>TONIGHT: 4 ACTS + OPEN MIC</strong>
               <span>INSERT LAUGHTER TO BEGIN</span>
               <span className="club-idle-glyph" aria-hidden="true">♫</span>
             </div>}
+            {tomato&&<div key={act.number+'-'+tomato.attempt} className={'club-tomato-projectile incoming-'+tomato.lane.toLowerCase()+(tomatoResult?(tomatoResult.dodged?' missed':' splatted'):'')} aria-hidden="true">🍅</div>}
             {propVisual&&<div key={stageProp.sequence} className={'club-chaos-effect '+propVisual.className} aria-hidden="true">
               <span>{propVisual.symbol}</span>
               {propVisual.id==='confetti'&&<div className="club-confetti-pieces">✦ ✧ ✦ ✧ ✦ ✧ ✦</div>}
@@ -241,7 +302,25 @@ export default function ComedyClub({beep,writerJokes=[]}){
                 </p>}
               </div>}
             </div>
-            <p className="club-keyhint">FOCUS STAGE THEN: <kbd>N</kbd> NEXT ACT · <kbd>R</kbd> REVEAL · <kbd>H</kbd> HECKLE · <kbd>P</kbd> CHICKEN · <kbd>D</kbd> DUEL. AUTO SHOW IS OFF BY DEFAULT.</p>
+            <div className="club-tomato-game" aria-label="Tomato Night dodge game">
+              <div className="club-tomato-heading">
+                <div><span>TOMATO NIGHT / DODGE THE PRODUCE</span><small>Three tomatoes maximum per act. The lane is announced before you dodge.</small></div>
+                <button type="button" disabled={!act||(!!tomato&&!tomatoResult)||tomatoAttempts>=MAX_THROWS_PER_ACT}
+                  onClick={tossTomato}>🍅 THROW A TOMATO</button>
+              </div>
+              <div className="club-tomato-readout" role="status">
+                {tomato&&!tomatoResult?'INCOMING TOMATO: '+tomato.lane+'. CHOOSE A DIFFERENT LANE TO DODGE!':
+                  tomatoResult?tomatoResult.outcome+' · '+tomatoResult.text:
+                  act?'The audience is respectfully waiting for permission to be unreasonable.':'The produce counter is closed until the show starts.'}
+              </div>
+              <div className="club-tomato-lanes" role="group" aria-label="Choose a dodge lane">
+                {LANES.map(lane=><button type="button" key={lane} disabled={!tomato||!!tomatoResult}
+                  onClick={()=>chooseDodge(lane)} aria-label={'Dodge '+lane.toLowerCase()}>
+                  {lane==='LEFT'?'←':lane==='RIGHT'?'→':'↓'} DODGE {lane}</button>)}
+              </div>
+              <div className="club-tomato-tally"><span>DODGES: {tomatoDodges}</span><span>SPLATS: {tomatoSplats}</span><span>THROWS THIS ACT: {tomatoAttempts}/{MAX_THROWS_PER_ACT}</span></div>
+            </div>
+            <p className="club-keyhint">FOCUS STAGE: <kbd>N</kbd> NEXT · <kbd>R</kbd> REVEAL · <kbd>H</kbd> HECKLE · <kbd>P</kbd> CHICKEN · <kbd>D</kbd> DUEL · <kbd>T</kbd> TOMATO. AUTO SHOW OFF BY DEFAULT.</p>
           </div>
         </div>
         <aside className="club-side">
@@ -281,6 +360,28 @@ export default function ComedyClub({beep,writerJokes=[]}){
         <div className="club-history">
           {history.length?history.map(item=><div key={item.number}><span>ACT {String(item.number).padStart(3,'0')}</span><strong>{item.who}</strong><p>{item.setup}</p></div>):<p className="club-history-empty">The club is quiet. Suspiciously quiet. There must be a punchline somewhere.</p>}
         </div>
+      </div>
+      <div className="club-manager-desk" id="mabel-desk">
+        <div className="club-manager-head">
+          <div className="club-manager-avatar" aria-hidden="true">📋</div>
+          <div><span>BACKSTAGE SAFETY & COMEDY COMPLIANCE</span><h3>{MANAGER.name}</h3><p>{MANAGER.title}. "{MANAGER.motto}"</p></div>
+        </div>
+        <div className="club-manager-toolbar">
+          <div><strong>{reports.length} ON-FILE INCIDENTS</strong><small>Latest {MAX_THROWS_PER_ACT} throws per act · archive capped at 30 reports</small></div>
+          <div><button type="button" onClick={exportReports} disabled={!reports.length}>↓ EXPORT REPORTS</button>
+            <button type="button" onClick={clearReports} disabled={!reports.length}>{clearArmed?'CONFIRM CLEAR':'CLEAR REPORTS'}</button>
+            {clearArmed&&<button type="button" onClick={()=>setClearArmed(false)}>CANCEL</button>}</div>
+        </div>
+        <p className="club-manager-status" role="status">{reportStatus}</p>
+        <div className="club-manager-reports">
+          {reports.length?reports.slice(0,8).map(report=><article key={report.id}>
+            <div><span>{report.id}</span><strong>{report.outcome}</strong></div>
+            <h4>ACT {report.act} / {report.performer}</h4>
+            <p>INCOMING: {report.incoming} · DODGE: {report.dodge}</p>
+            <p>{report.note}</p>
+          </article>):<p className="club-no-reports">Mabel has no reports to file. She finds this deeply suspicious.</p>}
+        </div>
+        <p className="club-manager-footnote">Fictional incident reports stay in this browser only. Export them as JSON if you wish to keep a copy. Clearing them is irreversible without a previous export.</p>
       </div>
       <div className="club-incident-log" aria-live="polite">
         <strong>BACKSTAGE INCIDENT REPORT</strong>

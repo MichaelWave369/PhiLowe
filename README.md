@@ -69,3 +69,12 @@ The pixel Comedy Club now has interactive slapstick and a heckler minigame. **Fo
 Seven **Achievements** unlock through play: Curtain Call, Props to You, Master of Disaster, Comeback Kid, Crowd Pleaser, Ten Act Wonder, and The Writer Is In. The trophy cabinet persists only in browser `localStorage`; no accounts or backend. Session scores reset on reload. Keyboard shortcuts when the club itself is focused: `N` next act, `R` reveal, `H` heckle, `P` rubber chicken, `D` open duel. No props can fire until an act begins. The extra animations respect reduced-motion preferences.
 
 The CI browser smoke tests for both `/` and `/PhiLowe/` now exercise prop controls, duel choices, badge persistence, show progression, and the Writer Room. All content and comedy characters are original and remain independent of Al Lowe's games and copyrighted assets.
+
+
+## Tomato Night & Mabel's Incident Desk (Rung 7)
+
+The club now features an interactive **Tomato Night** round. Up to three tomatoes can be thrown during an act. Each throw openly announces whether the incoming lane is LEFT, CENTER or RIGHT, and the visitor selects a different lane to help the performer dodge. Choosing the targeted lane produces a funny, harmless splat. Every throw requires a button press and every dodge a player choice; the game doesn't automatically throw objects.
+
+Original character **Mabel Carbon-Copy, Senior Director of Preventable Incidents** files comic incident reports for dodges and splats. The most recent 30 validated reports live in local browser storage, can be exported as JSON, and can be deleted through a two-step confirmation. A browser refresh retains the reports, not the live per-act score. No telemetry, accounts, external services, or actual physical interactions are involved. Reduced-motion support removes the projectile animation, and the controls are keyboard accessible.
+
+CI's full Chromium smoke run verifies tomato controls, both dodge outcomes, JSON report downloads, persistence, and explicit clearing on both `/` and GitHub Pages `/PhiLowe/`. New Node tests cover lane sequencing, safe resolution, validation and report storage.
