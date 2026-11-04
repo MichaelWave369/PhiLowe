@@ -51,3 +51,12 @@ In the retro terminal, run `JOKE`, `JOKE VR`, `JOKE RETRO`, `JOKE LOVE`, `JOKES`
 The independent fan tribute now has an offline-first **Writer Room** at `#writers-room`. Write, edit, and privately annotate your own jokes; choose either **Draft** (writer-only) or **On Stage** (appears in the Laugh Lounge and `JOKE MINE` in the terminal on this device). Browse and filter your vault, and export/import validated, versioned JSON backups. Imports merge without replacing existing jokes and skip duplicate setups/punchlines. Maximum 500 local jokes. No login, backend, or submissions to an external service. Because browser storage can be cleared, export backups regularly.
 
 `npm test` now includes tests for schema validation, create/update/delete, stage visibility, backup round trips, duplicate safety, and import limits.
+
+
+## Comedy Club (v4)
+
+The **PhiLowe Comedy Club** is a standalone, offline-first, single-player, simulated pixel-art theater at `#comedy-club`. Four **original** comedians (Bix Binary, Vera Velvet, Professor Plotwick, DJ Parallax) take turns performing jokes from their specialties. If you have Writer Room jokes marked **On Stage**, a fifth Open Mic performer appears automatically on the roster and delivers your original material. Private drafts are excluded.
+
+Use **Start the Show**, **Reveal Punchline**, **Next Comedian**, **Applaud**, **Groan**, and **Heckle**. Each performer has personality-specific intros and original heckle responses. Optional **Auto Show** cycles every 4.8 seconds for setups and 6.4 seconds for punchlines; it is off by default and cleans up its timers. Keyboard shortcuts when the stage has focus: N (next), R (reveal), H (heckle). The local audience scoreboard and six-act show log are not posted to a server. Comedians are fictional creations of Phi369 Labs, not characters belonging to Al Lowe or Sierra.
+
+`npm test` validates cast rotation, department restrictions, shuffle-bag nonrepetition, local open-mic behavior, and audience labeling. This is **not** a networked room, live show, or VR headset implementation yet.
