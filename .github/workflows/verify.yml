@@ -16,5 +16,7 @@ jobs:
           node-version: '22'
       - name: Install dependencies
         run: npm install --no-audit --no-fund
+      - name: Verify jokes and shuffle-bag behavior
+        run: npm test
       - name: Build React site
         run: npm run build
