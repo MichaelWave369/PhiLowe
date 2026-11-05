@@ -83,6 +83,41 @@ async function run() {
     if (await page.locator('.club-badge.unlocked').count() < 2)
       throw new Error('Club achievements were not awarded.');
 
+    // Rung 8: complete the full six-room point-and-click quest in a real browser.
+    const quest = page.locator('#backstage');
+    const room = async name => quest.locator('.backstage-map').getByRole('button', { name: new RegExp(name, 'i') }).click();
+    const action = async name => quest.locator('.backstage-buttons').getByRole('button', { name: new RegExp(name, 'i') }).click();
+    await room('The Secret Encore');
+    await quest.locator('.backstage-narrator').getByText(/STAGE LOCKED/).waitFor({timeout:5000});
+    await room("Mabel's Office");
+    await action('SIGN FORM LOL-404');
+    await quest.locator('.backstage-narrator').getByText(/mandatory briefing/).waitFor({timeout:5000});
+    await action('ASK MABEL FOR THE BRIEFING');
+    await action('SIGN FORM LOL-404');
+    await room('Hallway of Regrets');
+    await action('SEARCH VENDING MACHINE');
+    await room('Prop Closet 369');
+    await action('BUY A 9V BATTERY');
+    await action('REPAIR SPARE MICROPHONE');
+    await room('Lighting Booth');
+    await action('PRESS PINK SWITCH');
+    await quest.locator('.backstage-narrator').getByText(/Wrong color/).waitFor({timeout:5000});
+    await action('PRESS GOLD SWITCH');
+    await action('PRESS PINK SWITCH');
+    await action('PRESS CYAN SWITCH');
+    await quest.locator('.backstage-narrator').getByText(/LIGHT CUE COMPLETE/).waitFor({timeout:5000});
+    await room("Mabel's Office");
+    await action('REQUEST FINAL STAGE PASS');
+    await room('The Secret Encore');
+    await action('PERFORM THE GRAND ENCORE');
+    await quest.getByRole('heading', {name:/THE LAUGH WAS THE QUEST/}).waitFor({timeout:5000});
+    // Progress and unlock state must survive refresh, then be safely reset.
+    await page.reload({waitUntil:'domcontentloaded'});
+    await page.locator('#backstage .backstage-victory').waitFor({timeout:10000});
+    await page.locator('#backstage .backstage-victory').getByRole('button',{name:/PLAY AGAIN/}).click();
+    await quest.getByRole('button',{name:/CONFIRM RESTART/}).first().click();
+    await quest.locator('.backstage-victory').waitFor({state:'detached',timeout:5000});
+
     const setup = 'Why did the floppy disk visit the comedy club?';
     const punchline = 'To prove its timing was still magnetic.';
     await page.locator('#writer-editor textarea').nth(0).fill(setup);
@@ -100,7 +135,7 @@ async function run() {
     await page.locator('.club-no-reports').waitFor({ timeout: 5000 });
 
     if (errors.length) throw new Error('Browser JavaScript errors:\n' + errors.join('\n'));
-    console.log('PASS: React mounted, terminal rendered, Comedy Club tomato dodges/ledger, props/duel/badges, and writer persisted, no page errors. Base: ' + base);
+    console.log('PASS: React mounted, terminal rendered, Comedy Club tomato dodges/ledger, props/duel/badges, full six-room Backstage quest, and writer persisted, no page errors. Base: ' + base);
   } finally {
     if (browser) await browser.close();
     server.kill('SIGTERM');
