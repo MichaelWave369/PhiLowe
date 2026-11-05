@@ -100,3 +100,12 @@ Find wheel tracks, a transfer form and a false wall hinge before revealing the p
 This is a fictional comedy mystery. The story contains no actual visitor letters. Progress, evidence, witness decisions, wrong guesses and the chosen ending remain in local browser storage, with validation and a confirmed new-case reset. There is no server, account, tracking or public upload. Existing Joke Writer, Club, Backstage Mayhem and trophy saves are untouched.
 
 CI adds Node tests for the mystery state machine, branching witnesses, evidence rules, keypad mistakes, false accusations, endings, save validation, and an actual Chromium browser playthrough of the entire mystery at both `/` and `/PhiLowe/`.
+
+
+## The Director's Cut (Rung 10)
+
+The `#directors-cut` screening room adds **nine original unlockable movie reels**, each with two distinct playable takes, a film-vault interface, a pixel projector, director commentary and filtering for unlocked/unwatched footage. The cold open is available immediately. Other scenes unlock through **Backstage Mayhem** and **Case 404** milestones: the optional rubber-chicken handoff, completing the Secret Encore, sympathetic interviews, false accusations, solving the mystery, and either mystery ending. Finish both adventures to unlock the crossover finale, **The Last Laugh**.
+
+The gallery receives progress signals in the same browser tab, so it updates as your adventures advance without reloading. Unlock history, viewed reels and the most recently directed take are stored separately in browser `localStorage`. **Restarting either adventure does not delete your earned footage.** The two mystery endings unlock different bonus reels and cannot be confused with publishing or uploading anything. All lines and characters are original; sample letters in scenes are entirely fictional, never user content.
+
+The full Chromium CI smoke suite now directs the opening reel, unlocks Mabel's alternate encore, resets Backstage Mayhem, completes Case 404, unlocks both the gallery reel and crossover finale, reloads, and resets Case 404 while verifying that historical unlocks persist. Browser smoke checks run for both site root and GitHub Pages base path.

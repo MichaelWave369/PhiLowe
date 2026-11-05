@@ -95,7 +95,7 @@ export default function WriterRoom({jokes,onChange,beep,storageWarning}){
   return <section className="writer-section" id="writers-room" aria-labelledby="writer-title">
     <div className="wrap">
       <div className="section-heading centered">
-        <div className="pixel-rule"><span>07 / WRITERS ROOM</span><span className="rule-line"/><span className="rule-end">✦</span></div>
+        <div className="pixel-rule"><span>08 / WRITERS ROOM</span><span className="rule-line"/><span className="rule-end">✦</span></div>
         <p className="superlabel">THE WORLD ALREADY HAS ENOUGH BAD JOKES. LET US MAKE OUR OWN.</p>
         <h2 id="writer-title">WRITE IT.<br/><span>THEN WORK THE ROOM.</span></h2>
         <p>Build your own collection of adventure-game gags, groan-worthy puns, and outrageous ideas. Your drafts remain private. Move a joke On Stage when it is ready for the Laugh Lounge.</p>

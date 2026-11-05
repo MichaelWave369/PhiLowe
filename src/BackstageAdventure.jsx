@@ -44,7 +44,7 @@ export default function BackstageAdventure({beep}){
  const completed=tasks(game).filter(x=>x.done).length;
  const actionList=availableActions(game);
  useEffect(()=>{
-   try{saveBackstage(window.localStorage,game);setStorageWarning('');}
+   try{saveBackstage(window.localStorage,game);setStorageWarning('');window.dispatchEvent(new Event('philowe-progress'));}
    catch{setStorageWarning('Browser storage is unavailable. This adventure may not survive a reload.');}
  },[game]);
  function perform(id){

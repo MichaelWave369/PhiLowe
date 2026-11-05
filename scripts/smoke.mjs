@@ -46,6 +46,14 @@ async function run() {
     const heading = await page.locator('#hero-title').innerText();
     if (!heading.includes('THE LAUGH')) throw new Error('Main hero did not render: ' + heading);
     await page.getByText(/PHILOWE BIOS v1\.0/).waitFor({ timeout: 10000 });
+    // Director's Cut begins with one immediately playable reel.
+    const cinema = page.locator('#directors-cut');
+    const coldOpen = cinema.locator('.director-reel').filter({hasText:'The Rehearsal That Escaped'});
+    await coldOpen.waitFor({timeout:10000});
+    if (!(await coldOpen.isEnabled())) throw new Error('Director cold open was not unlocked.');
+    await cinema.locator('.director-take-buttons').getByRole('button',{name:/ROLL THE FUNNY TAKE/}).click();
+    await cinema.locator('.director-variant').getByText(/rubber chicken/i).waitFor({timeout:5000});
+
     await page.getByRole('button', { name: /START THE SHOW/ }).click();
     await page.locator('.club-controls').getByRole('button', { name: /REVEAL PUNCHLINE/ }).click();
     const comedian = page.locator('.club-speaker span').first();
@@ -111,12 +119,21 @@ async function run() {
     await room('The Secret Encore');
     await action('PERFORM THE GRAND ENCORE');
     await quest.getByRole('heading', {name:/THE LAUGH WAS THE QUEST/}).waitFor({timeout:5000});
+    // Completing Rung 8 immediately unlocks a playable extra scene.
+    const encoreReel = cinema.locator('.director-reel').filter({hasText:'Mabel Takes the Bow'});
+    await encoreReel.click();
+    await cinema.locator('.director-take-buttons').getByRole('button',{name:/LET MABEL TAKE THE BOW/}).click();
+    await cinema.locator('.director-variant').getByText(/audience applauds/i).waitFor({timeout:5000});
+
     // Progress and unlock state must survive refresh, then be safely reset.
     await page.reload({waitUntil:'domcontentloaded'});
     await page.locator('#backstage .backstage-victory').waitFor({timeout:10000});
     await page.locator('#backstage .backstage-victory').getByRole('button',{name:/PLAY AGAIN/}).click();
     await quest.getByRole('button',{name:/CONFIRM RESTART/}).first().click();
     await quest.locator('.backstage-victory').waitFor({state:'detached',timeout:5000});
+    if (!(await encoreReel.isEnabled()))
+      throw new Error('Earned Director scene was lost when Backstage Mayhem restarted.');
+
 
     // Rung 9: full Case 404 detective playthrough, including false lead and
     // keypad error, gated witness dialogues, resolution, persistence and reset.
@@ -162,11 +179,30 @@ async function run() {
     await detective.locator('.case404-narrator').getByText(/CASE SOLVED/).waitFor({timeout:5000});
     await caseAction('FINAL CHOICE: OPEN A GALLERY OF GOOD DAYS');
     await detective.locator('.case404-conclusion').getByRole('heading',{name:/THE GALLERY OF GOOD DAYS/}).waitFor({timeout:5000});
+    // The gallery reel and the crossover finale require real Case404 progress
+    // and the previously earned Backstage Encore milestone.
+    const galleryReel = cinema.locator('.director-reel').filter({hasText:'Gallery of Good Days: The Extra Scene'});
+    const crossoverReel = cinema.locator('.director-reel').filter({hasText:'The Last Laugh'});
+    await galleryReel.click();
+    await cinema.locator('.director-take-buttons').getByRole('button',{name:/RAISE THE WELCOME BANNER/}).click();
+    await cinema.locator('.director-variant').getByText(/KEEP THE LAUGH/).waitFor({timeout:5000});
+    await crossoverReel.click();
+    await cinema.locator('.director-take-buttons').getByRole('button',{name:/ROLL CREDITS FOR EVERYONE/}).click();
+    await cinema.locator('.director-variant').getByText(/person holding the controller/).waitFor({timeout:5000});
+
     await page.reload({waitUntil:'domcontentloaded'});
     await page.locator('#case404 .case404-conclusion').waitFor({timeout:10000});
+    if (!(await page.locator('#directors-cut .director-reel').filter({hasText:'The Last Laugh'}).isEnabled()))
+      throw new Error('Director crossover reel did not persist on refresh.');
+    if (!(await page.locator('#directors-cut .director-reel').filter({hasText:'Mabel Takes the Bow'}).isEnabled()))
+      throw new Error('Director Encore reel did not persist after game restart.');
+
     await detective.getByRole('button',{name:'↻ OPEN A NEW CASE'}).click();
     await detective.getByRole('button',{name:'CONFIRM NEW CASE'}).click();
     await detective.locator('.case404-conclusion').waitFor({state:'detached',timeout:5000});
+    if (!(await crossoverReel.isEnabled()))
+      throw new Error('Director finale was lost after resetting Case404.');
+
 
 
     const setup = 'Why did the floppy disk visit the comedy club?';
@@ -186,7 +222,7 @@ async function run() {
     await page.locator('.club-no-reports').waitFor({ timeout: 5000 });
 
     if (errors.length) throw new Error('Browser JavaScript errors:\n' + errors.join('\n'));
-    console.log('PASS: React mounted, terminal rendered, Comedy Club tomato dodges/ledger, props/duel/badges, full six-room Backstage quest, Case 404 investigation, and writer persisted, no page errors. Base: ' + base);
+    console.log('PASS: React mounted, terminal rendered, Comedy Club tomato dodges/ledger, props/duel/badges, full six-room Backstage quest, Case 404 investigation, Director's Cut unlocks and replay, and writer persisted, no page errors. Base: ' + base);
   } finally {
     if (browser) await browser.close();
     server.kill('SIGTERM');
