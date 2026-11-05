@@ -78,3 +78,14 @@ The club now features an interactive **Tomato Night** round. Up to three tomatoe
 Original character **Mabel Carbon-Copy, Senior Director of Preventable Incidents** files comic incident reports for dodges and splats. The most recent 30 validated reports live in local browser storage, can be exported as JSON, and can be deleted through a two-step confirmation. A browser refresh retains the reports, not the live per-act score. No telemetry, accounts, external services, or actual physical interactions are involved. Reduced-motion support removes the projectile animation, and the controls are keyboard accessible.
 
 CI's full Chromium smoke run verifies tomato controls, both dodge outcomes, JSON report downloads, persistence, and explicit clearing on both `/` and GitHub Pages `/PhiLowe/`. New Node tests cover lane sequencing, safe resolution, validation and report storage.
+
+
+## Backstage Mayhem (Rung 8)
+
+The new `#backstage` section is a self-contained, offline point-and-click comedy adventure. Explore **six original pixel rooms**: Hallway of Regrets, Mabel's Office, Prop Closet 369, Dressing Rooms, Lighting Booth, and the locked Secret Encore. The backstage map, inventory, room conversations, narration, quest checklist, hints and six collectible original joke notes make the club feel like a little explorable adventure game.
+
+**Quest:** receive Mabel's safety briefing, sign Form LOL-404, find a vending coin, purchase a 9V battery, repair the backup microphone, program the booth colors in the order GOLD → PINK → CYAN, obtain Mabel's stage pass and perform the final encore. Optional: collect all six joke notes and gift a rubber chicken to Bix Binary. You cannot enter the Secret Encore without completing the first three tasks and obtaining final clearance.
+
+Progress, collected notes, visits and quest flags are stored **only in browser localStorage**, with schema checks and a two-step restart confirmation. No server, accounts, or uploads. If the browser data is cleared, the adventure starts over. The cast, puzzles, dialogue, artwork and notes are original to this independent fan tribute.
+
+CI includes pure Node tests for state transitions, puzzles, gating, collectibles and save validation, plus a headless Chromium smoke test on both site-root and GitHub Pages subpath. The browser test follows the quest from a locked stage to the secret finale and verifies that it persists and can be reset.
