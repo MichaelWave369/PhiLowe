@@ -222,7 +222,7 @@ async function run() {
     await page.locator('.club-no-reports').waitFor({ timeout: 5000 });
 
     if (errors.length) throw new Error('Browser JavaScript errors:\n' + errors.join('\n'));
-    console.log('PASS: React mounted, terminal rendered, Comedy Club tomato dodges/ledger, props/duel/badges, full six-room Backstage quest, Case 404 investigation, Director's Cut unlocks and replay, and writer persisted, no page errors. Base: ' + base);
+    console.log('PASS: React mounted, terminal rendered, Comedy Club tomato dodges/ledger, props/duel/badges, full six-room Backstage quest, Case 404 investigation, Director Cut unlocks and replay, and writer persisted, no page errors. Base: ' + base);
   } finally {
     if (browser) await browser.close();
     server.kill('SIGTERM');
