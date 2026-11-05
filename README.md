@@ -89,3 +89,14 @@ The new `#backstage` section is a self-contained, offline point-and-click comedy
 Progress, collected notes, visits and quest flags are stored **only in browser localStorage**, with schema checks and a two-step restart confirmation. No server, accounts, or uploads. If the browser data is cleared, the adventure starts over. The cast, puzzles, dialogue, artwork and notes are original to this independent fan tribute.
 
 CI includes pure Node tests for state transitions, puzzles, gating, collectibles and save validation, plus a headless Chromium smoke test on both site-root and GitHub Pages subpath. The browser test follows the quest from a locked stage to the secret finale and verifies that it persists and can be reset.
+
+
+## Case 404: The Missing Master Cabinet (Rung 9)
+
+The standalone `#case404` investigation adds a second original adventure to PhiLowe, separate from your Backstage Mayhem save. A master filing cabinet has vanished. Search six scenes, uncover six evidence cards, and interview **Mabel Carbon-Copy, Bix Binary, Vera Velvet, and DJ Parallax**. Each witness offers two dialogue approaches, and the final epilogue reacts to whether you listened or accused.
+
+Find wheel tracks, a transfer form and a false wall hinge before revealing the prop closet keypad. Crack **404** to open the secret passage, then examine the cabinet's letter. Accuse Mabel, Bix or the cabinet itself; wrong theories can be corrected. Once enough evidence and statements are gathered, discover the cabinet's unusual reason for moving itself, then choose either **The Gallery of Good Days** or **The Archive of Quiet Joy** as your final outcome.
+
+This is a fictional comedy mystery. The story contains no actual visitor letters. Progress, evidence, witness decisions, wrong guesses and the chosen ending remain in local browser storage, with validation and a confirmed new-case reset. There is no server, account, tracking or public upload. Existing Joke Writer, Club, Backstage Mayhem and trophy saves are untouched.
+
+CI adds Node tests for the mystery state machine, branching witnesses, evidence rules, keypad mistakes, false accusations, endings, save validation, and an actual Chromium browser playthrough of the entire mystery at both `/` and `/PhiLowe/`.
