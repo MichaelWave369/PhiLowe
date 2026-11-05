@@ -41,7 +41,7 @@ export default function Case404({beep}){
  const interviews=Object.keys(game.interviews).length;
  const ending=CASE_ENDINGS.find(e=>e.id===game.ending);
  useEffect(()=>{
-  try{saveCase(window.localStorage,game);setStorageWarning('');}
+  try{saveCase(window.localStorage,game);setStorageWarning('');window.dispatchEvent(new Event('philowe-progress'));}
   catch{setStorageWarning('Browser storage is blocked. Case progress may not survive a refresh.');}
  },[game]);
  function act(action){
