@@ -118,6 +118,57 @@ async function run() {
     await quest.getByRole('button',{name:/CONFIRM RESTART/}).first().click();
     await quest.locator('.backstage-victory').waitFor({state:'detached',timeout:5000});
 
+    // Rung 9: full Case 404 detective playthrough, including false lead and
+    // keypad error, gated witness dialogues, resolution, persistence and reset.
+    const detective = page.locator('#case404');
+    const caseRoom = async name => detective.locator('.case404-map')
+      .getByRole('button',{name:new RegExp(name,'i')}).click();
+    const caseAction = async name => detective.locator('.case404-action-grid')
+      .getByRole('button',{name:new RegExp(name,'i')}).click();
+    const caseChoice = async name => detective.locator('.case404-dialogue-choices')
+      .getByRole('button',{name:new RegExp(name,'i')}).click();
+    await caseRoom('Secret Passage 404');
+    await detective.locator('.case404-narrator').getByText(/SECRET PASSAGE LOCKED/).waitFor({timeout:5000});
+    await caseAction('INSPECT WHEEL TRACKS');
+    await caseRoom("Mabel's Office");
+    await caseAction('INSPECT FORM 404-C');
+    await caseAction('QUESTION MABEL');
+    await caseChoice('ASK HOW SHE FEELS ABOUT THE LETTERS');
+    await caseRoom('Prop Closet 369');
+    await caseAction('INSPECT FALSE WALL HINGE');
+    await caseAction('QUESTION BIX');
+    await caseChoice('ASK ABOUT THE MOTORIZED CABINET');
+    await caseAction('FOLLOW TRACKS TO SECRET HINGE');
+    await caseAction('KEYPAD 4');
+    await caseAction('KEYPAD 8');
+    await detective.locator('.case404-narrator').getByText(/Wrong digit/).waitFor({timeout:5000});
+    await caseAction('KEYPAD 4');
+    await caseAction('KEYPAD 0');
+    await caseAction('KEYPAD 4');
+    await detective.locator('.case404-narrator').getByText(/CODE 404 ACCEPTED/).waitFor({timeout:5000});
+    await caseRoom('Dressing Rooms');
+    await caseAction('INSPECT MIRROR MESSAGE');
+    await caseAction('QUESTION VERA');
+    await caseChoice('ASK WHY THE LETTERS MATTER');
+    await caseRoom('Sound Booth');
+    await caseAction('INSPECT OVERNIGHT RECORDING');
+    await caseAction('QUESTION DJ');
+    await caseChoice('LISTEN TO THE COMPLETE TAPE');
+    await caseRoom('Secret Passage 404');
+    await caseAction('INSPECT THE CABINET LETTER');
+    await caseAction('CONCLUDE: BIX STOLE');
+    await detective.locator('.case404-narrator').getByText(/FALSE LEAD/).waitFor({timeout:5000});
+    await caseAction('CONCLUDE: THE CABINET MOVED ITSELF');
+    await detective.locator('.case404-narrator').getByText(/CASE SOLVED/).waitFor({timeout:5000});
+    await caseAction('FINAL CHOICE: OPEN A GALLERY OF GOOD DAYS');
+    await detective.locator('.case404-conclusion').getByRole('heading',{name:/THE GALLERY OF GOOD DAYS/}).waitFor({timeout:5000});
+    await page.reload({waitUntil:'domcontentloaded'});
+    await page.locator('#case404 .case404-conclusion').waitFor({timeout:10000});
+    await detective.getByRole('button',{name:'↻ OPEN A NEW CASE'}).click();
+    await detective.getByRole('button',{name:'CONFIRM NEW CASE'}).click();
+    await detective.locator('.case404-conclusion').waitFor({state:'detached',timeout:5000});
+
+
     const setup = 'Why did the floppy disk visit the comedy club?';
     const punchline = 'To prove its timing was still magnetic.';
     await page.locator('#writer-editor textarea').nth(0).fill(setup);
@@ -135,7 +186,7 @@ async function run() {
     await page.locator('.club-no-reports').waitFor({ timeout: 5000 });
 
     if (errors.length) throw new Error('Browser JavaScript errors:\n' + errors.join('\n'));
-    console.log('PASS: React mounted, terminal rendered, Comedy Club tomato dodges/ledger, props/duel/badges, full six-room Backstage quest, and writer persisted, no page errors. Base: ' + base);
+    console.log('PASS: React mounted, terminal rendered, Comedy Club tomato dodges/ledger, props/duel/badges, full six-room Backstage quest, Case 404 investigation, and writer persisted, no page errors. Base: ' + base);
   } finally {
     if (browser) await browser.close();
     server.kill('SIGTERM');
